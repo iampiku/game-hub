@@ -8,31 +8,53 @@ import {
 
 import { useState } from "react";
 
+import useLocalStorage from "@/hooks/useLocalStorage";
+
 export default function TopBar() {
+	const { setItem } = useLocalStorage<boolean>("isDark");
 	const [search, setSearch] = useState("");
 	const [isDark, setIsDark] = useState(false);
 
+	function handleThemeSwitch() {
+		setItem(isDark);
+		updateAppTheme();
+	}
+
+	function updateAppTheme() {
+		const appContainer = document.getElementById("route-container");
+		if (!appContainer) return;
+		appContainer.className = !isDark
+			? "dark text-foreground bg-background"
+			: "";
+	}
+
 	return (
-		<Navbar isBlurred>
-			<NavbarContent justify="center">
+		<Navbar isBlurred maxWidth="full">
+			<NavbarContent>
 				<NavbarItem>
-					<p className="font-bold text-2xl">Game Browser</p>
+					<p className="font-semibold text-xl">
+						Game <br /> Browser
+					</p>
 				</NavbarItem>
-				<NavbarItem>
+				<NavbarItem className="w-full">
 					<Input
-						size="sm"
 						type="text"
 						variant="flat"
-						placeholder="Search Games..."
+						isClearable
+						size=""
+						aria-label="Search"
+						radius="lg"
 						value={search}
-						onChange={(event) => setSearch(event.target.value)}
+						placeholder="Search Games...🔍"
+						onValueChange={setSearch}
 					></Input>
 				</NavbarItem>
 				<NavbarItem>
 					<Switch
-						color="secondary"
 						size="sm"
-						onChange={() => setIsDark(!isDark)}
+						isSelected={isDark}
+						onValueChange={setIsDark}
+						onChange={handleThemeSwitch}
 					></Switch>
 				</NavbarItem>
 			</NavbarContent>

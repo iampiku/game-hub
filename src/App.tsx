@@ -4,8 +4,8 @@ import { RouterProvider } from "react-router-dom";
 
 export default function App() {
 	return (
-		<div className="dark text-foreground bg-background">
+		<main id="route-container">
 			<RouterProvider router={routes}></RouterProvider>
-		</div>
+		</main>
 	);
 }

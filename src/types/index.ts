@@ -37,12 +37,9 @@ export type Games = {
 	suggestions_count: number;
 	updated: string;
 	reviews_count: number;
-	saturated_color: Color;
-	dominant_color: Color;
 	platforms: PlatformElement[];
 	parent_platforms: ParentPlatform[];
 	genres: Genre[];
-	stores: Store[];
 	tags: Genre[];
 	esrb_rating: EsrbRating;
 	short_screenshots: ShortScreenshot[];
@@ -57,7 +54,7 @@ export type AddedByStatus = {
 	playing: number;
 };
 
-export type Color = "0f0f0f";
+export type Color = '0f0f0f';
 
 export type EsrbRating = {
 	id: number;
@@ -72,21 +69,21 @@ export type Genre = {
 	games_count: number;
 	image_background: string;
 	domain?: Domain;
-	language?: Language;
+	language?: string;
 };
 
 export type Domain =
-	| "store.playstation.com"
-	| "epicgames.com"
-	| "store.steampowered.com"
-	| "marketplace.xbox.com"
-	| "microsoft.com"
-	| "gog.com"
-	| "nintendo.com"
-	| "play.google.com"
-	| "apps.apple.com";
+	| 'store.playstation.com'
+	| 'epicgames.com'
+	| 'store.steampowered.com'
+	| 'marketplace.xbox.com'
+	| 'microsoft.com'
+	| 'gog.com'
+	| 'nintendo.com'
+	| 'play.google.com'
+	| 'apps.apple.com';
 
-export type Language = "eng";
+export type Language = 'eng';
 
 export type ParentPlatform = {
 	platform: EsrbRating;
@@ -117,12 +114,12 @@ export type Requirements = {
 
 export type Rating = {
 	id: number;
-	title: Title;
+	title: string;
 	count: number;
 	percent: number;
 };
 
-export type Title = "exceptional" | "recommended" | "meh" | "skip";
+export type Title = 'exceptional' | 'recommended' | 'meh' | 'skip';
 
 export type ShortScreenshot = {
 	id: number;

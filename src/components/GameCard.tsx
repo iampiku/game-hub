@@ -16,12 +16,11 @@ export default function GameCard({ game }: Readonly<Props>) {
 	);
 
 	return (
-		<Card className="my-2 cursor-pointer shadow-lg mb-4 bg-white/10">
+		<Card className="my-2 cursor-pointer shadow-lg mb-4 bg-white/10 lg:max-w-[480px]">
 			<CardHeader>
 				<Image
 					isZoomed
 					isBlurred
-					width="100%"
 					loading={"lazy"}
 					alt="game_poster"
 					src={game.background_image}
