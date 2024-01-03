@@ -6,30 +6,25 @@ import {
 	Switch,
 } from "@nextui-org/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 export default function TopBar() {
-	const { setItem } = useLocalStorage<boolean>("isDark");
+	const { setItem, getItem } = useLocalStorage<boolean>("isDark");
+
 	const [search, setSearch] = useState("");
-	const [isDark, setIsDark] = useState(false);
+	const [isDark, setIsDark] = useState(!!getItem());
 
-	function handleThemeSwitch() {
+	useEffect(() => {
 		setItem(isDark);
-		updateAppTheme();
-	}
-
-	function updateAppTheme() {
 		const appContainer = document.getElementById("route-container");
 		if (!appContainer) return;
-		appContainer.className = !isDark
-			? "dark text-foreground bg-background"
-			: "";
-	}
+		appContainer.className = isDark ? "dark text-foreground bg-background" : "";
+	}, [isDark, setItem]);
 
 	return (
-		<Navbar isBlurred maxWidth="full">
+		<Navbar isBlurred maxWidth="full" className="pb-2">
 			<NavbarContent>
 				<NavbarItem>
 					<p className="font-semibold text-xl">
@@ -41,7 +36,7 @@ export default function TopBar() {
 						type="text"
 						variant="flat"
 						isClearable
-						size=""
+						size="sm"
 						aria-label="Search"
 						radius="lg"
 						value={search}
@@ -54,8 +49,8 @@ export default function TopBar() {
 						size="sm"
 						isSelected={isDark}
 						onValueChange={setIsDark}
-						onChange={handleThemeSwitch}
 					></Switch>
+					<span>{isDark}</span>
 				</NavbarItem>
 			</NavbarContent>
 		</Navbar>
