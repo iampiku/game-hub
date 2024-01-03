@@ -1,42 +1,49 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Listbox, ListboxItem } from "@nextui-org/react";
+import { Listbox, ListboxItem, Chip } from "@nextui-org/react";
 
 type ListItems = string[];
 type ListItemsWithIcons = { label: string; icon: JSX.Element }[];
 
 interface Props {
 	listTitle?: string;
+	onAction: (item: string) => void;
 	listItems: ListItems | ListItemsWithIcons;
 }
 
-export default function ItemsList({
-	listItems,
-	listTitle = "",
-}: Readonly<Props>) {
+export default function ItemsList({ listItems, onAction }: Readonly<Props>) {
 	if (listItems.length === 0) return null;
 
 	const itemsWithIcons = listItems.every((item) => typeof item === "object");
 
-	const ListItemComponent = () => {
-		return itemsWithIcons
-			? (listItems as ListItemsWithIcons).map((item) => {
-					return (
-						<ListboxItem key={item.label} startContent={item.icon}>
-							<span className="text-base">{item.label}</span>
-						</ListboxItem>
-					);
-			  })
-			: (listItems as ListItems).map((item) => {
-					return <ListboxItem key={item}>{item}</ListboxItem>;
-			  });
-	};
-
 	return (
-		<>
-			<p className="font-semibold text-xl ml-3">{listTitle}</p>
-			<Listbox variant="shadow" className="text-2xl">
-				{ListItemComponent()}
-			</Listbox>
-		</>
+		<Listbox
+			variant="shadow"
+			aria-label="list-component"
+			onAction={(key) => onAction(key.toString())}
+		>
+			{itemsWithIcons
+				? (listItems as ListItemsWithIcons).map(({ label, icon }) => {
+						return (
+							<ListboxItem
+								key={label}
+								startContent={
+									<Chip variant="shadow" size="sm" color="primary">
+										{icon}
+									</Chip>
+								}
+								textValue={label}
+							>
+								<span className="text-base">{label}</span>
+							</ListboxItem>
+						);
+				  })
+				: (listItems as ListItems).map((item) => {
+						return (
+							<ListboxItem key={item} textValue={item}>
+								{item}
+							</ListboxItem>
+						);
+				  })}
+		</Listbox>
 	);
 }

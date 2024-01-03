@@ -16,7 +16,12 @@ export default function GameCard({ game }: Readonly<Props>) {
 	);
 
 	return (
-		<Card className="my-2 cursor-pointer shadow-lg mb-4 bg-white/10 lg:max-w-[480px]">
+		<Card
+			isHoverable
+			isBlurred
+			isPressable
+			className="my-2 shadow-lg mb-4 bg-white/10 lg:max-w-[480px]"
+		>
 			<CardHeader>
 				<Image
 					isZoomed

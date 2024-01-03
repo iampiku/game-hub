@@ -5,10 +5,12 @@ import {
 	FaApple,
 	FaLinux,
 	FaAndroid,
+	FaGlobe,
+	FaMobile,
 } from "react-icons/fa";
-import { BsGlobe } from "react-icons/bs";
+
 import { SiNintendo } from "react-icons/si";
-import { MdPhoneIphone } from "react-icons/md";
+
 import { IconType } from "react-icons";
 
 import { Tooltip, Chip } from "@nextui-org/react";
@@ -20,12 +22,12 @@ interface Props {
 export default function PlatformIcons({ platformNames }: Readonly<Props>) {
 	const iconMap: { [key: string]: IconType } = {
 		xbox: FaXbox,
-		web: BsGlobe,
+		web: FaGlobe,
 		mac: FaApple,
 		ps: FaWindows,
 		linux: FaLinux,
 		android: FaAndroid,
-		ios: MdPhoneIphone,
+		ios: FaMobile,
 		nintendo: SiNintendo,
 		playstation: FaPlaystation,
 	};
