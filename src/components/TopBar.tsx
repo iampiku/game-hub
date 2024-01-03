@@ -6,7 +6,7 @@ import {
 	Switch,
 } from "@nextui-org/react";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import useLocalStorage from "@/hooks/useLocalStorage";
 
@@ -16,12 +16,21 @@ export default function TopBar() {
 	const [search, setSearch] = useState("");
 	const [isDark, setIsDark] = useState(!!getItem());
 
+	const updateAppTheme = useCallback(
+		(isDark: boolean) => {
+			setItem(isDark);
+			const appContainer = document.getElementById("route-container");
+			if (!appContainer) return;
+			appContainer.className = isDark
+				? "dark text-foreground bg-background"
+				: "";
+		},
+		[setItem]
+	);
+
 	useEffect(() => {
-		setItem(isDark);
-		const appContainer = document.getElementById("route-container");
-		if (!appContainer) return;
-		appContainer.className = isDark ? "dark text-foreground bg-background" : "";
-	}, [isDark, setItem]);
+		updateAppTheme(isDark);
+	}, [isDark, updateAppTheme]);
 
 	return (
 		<Navbar isBlurred maxWidth="full" className="pb-2">
