@@ -13,7 +13,13 @@ interface Props {
 export default function ItemsList({ listItems, onAction }: Readonly<Props>) {
 	if (listItems.length === 0) return null;
 
-	const itemsWithIcons = listItems.every((item) => typeof item === "object");
+	const itemsWithIcons: boolean = listItems.every(
+		(item) => typeof item === "object"
+	);
+
+	// function onListItemClick(key: string) {
+	// 	return listItems.find((item) => item.)
+	// }
 
 	return (
 		<Listbox

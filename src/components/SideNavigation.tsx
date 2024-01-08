@@ -20,9 +20,20 @@ import { SiNintendo } from "react-icons/si";
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
+type ListItem = {
+	label: string;
+	icon: JSX.Element;
+};
+
+type AccordionItems = {
+	title: string;
+	items: ListItem[];
+};
+
 export default function SideNavigation() {
-	const iconClasses = "";
-	const newReleasesItems = [
+	const iconClasses: string = "text-base";
+
+	const newReleasesItems: ListItem[] = [
 		{
 			label: "Last 30 days",
 			icon: <FaStar className={iconClasses} />,
@@ -40,7 +51,7 @@ export default function SideNavigation() {
 			icon: <FaCalendar className={iconClasses} />,
 		},
 	];
-	const topGames = [
+	const topGames: ListItem[] = [
 		{
 			label: "Best of the year",
 			icon: <FaTrophy className={iconClasses} />,
@@ -54,7 +65,7 @@ export default function SideNavigation() {
 			icon: <FaCrown className={iconClasses} />,
 		},
 	];
-	const platforms = [
+	const platforms: ListItem[] = [
 		{
 			label: "Windows",
 			icon: <FaWindows className={iconClasses} />,
@@ -93,46 +104,42 @@ export default function SideNavigation() {
 		},
 	];
 
+	const accordionItemList: AccordionItems[] = [
+		{
+			title: "New Releases",
+			items: newReleasesItems,
+		},
+		{
+			title: "Top",
+			items: topGames,
+		},
+		{
+			title: "Platforms",
+			items: platforms,
+		},
+	];
+
 	function handleListItemClick(item: string) {
 		console.log(item);
 	}
 
 	return (
 		<Accordion
-			variant="splitted"
 			isCompact
+			variant="splitted"
 			selectionMode="multiple"
-			defaultExpandedKeys={["1"]}
+			defaultExpandedKeys={["0"]}
 		>
-			<AccordionItem
-				aria-label="New Releases"
-				className="bg-white/50"
-				title="New Releases"
-				key={1}
-				isCompact
-			>
-				<ItemsList
-					listItems={newReleasesItems}
-					listTitle="New Releases"
-					onAction={handleListItemClick}
-				/>
-			</AccordionItem>
-
-			<AccordionItem aria-label="Top" title="Top" key={2} isCompact>
-				<ItemsList
-					listItems={topGames}
-					listTitle="Top"
-					onAction={handleListItemClick}
-				/>
-			</AccordionItem>
-
-			<AccordionItem aria-label="PlatForms" title="PlatForms" key={3} isCompact>
-				<ItemsList
-					listItems={platforms}
-					listTitle="PlatForms"
-					onAction={handleListItemClick}
-				/>
-			</AccordionItem>
+			{accordionItemList.map((item, key) => {
+				return (
+					<AccordionItem key={key} arial-label={item.title} title={item.title}>
+						<ItemsList
+							listItems={item.items}
+							onAction={handleListItemClick}
+						></ItemsList>
+					</AccordionItem>
+				);
+			})}
 		</Accordion>
 	);
 }
