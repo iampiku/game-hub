@@ -1,3 +1,12 @@
+import DefaultLayout from "@/layouts/Default";
+
+import { useParams } from "react-router-dom";
+
 export default function SearchInfo() {
-	return <span>Hi from search info</span>;
+	const { id } = useParams();
+	return (
+		<DefaultLayout>
+			<span>hi from search SearchInfo {id}</span>
+		</DefaultLayout>
+	);
 }
