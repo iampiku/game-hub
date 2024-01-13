@@ -15,12 +15,21 @@ export default function GameCard({ game }: Readonly<Props>) {
 		({ platform }) => platform.slug
 	);
 
+	function imageSizeReducer(imageUrl: string): string {
+		const target = "media/";
+		const reducedDimension = "crop/600/400/";
+		const index = imageUrl.indexOf(target) + target.length;
+		return `${imageUrl.slice(0, index)}${reducedDimension}${imageUrl.slice(
+			index
+		)}`;
+	}
+
 	return (
 		<Card
 			isHoverable
 			isBlurred
 			isPressable
-			className="my-2 shadow-lg mb-4 bg-white/10 lg:max-w-[480px]"
+			className="shadow-lg mb-3 bg-white/10 lg:max-w-[480px]"
 		>
 			<CardHeader>
 				<Image
@@ -28,7 +37,7 @@ export default function GameCard({ game }: Readonly<Props>) {
 					isBlurred
 					loading={"lazy"}
 					alt="game_poster"
-					src={game.background_image}
+					src={imageSizeReducer(game.background_image)}
 				></Image>
 			</CardHeader>
 			<CardBody>
