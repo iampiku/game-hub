@@ -1,23 +1,3 @@
-export type Filters = {
-	years: FiltersYear[];
-};
-
-export type FiltersYear = {
-	from: number;
-	to: number;
-	filter: string;
-	decade: number;
-	years: YearYear[];
-	nofollow: boolean;
-	count: number;
-};
-
-export type YearYear = {
-	year: number;
-	count: number;
-	nofollow: boolean;
-};
-
 export type Games = {
 	id: number;
 	slug: string;
@@ -54,8 +34,6 @@ export type AddedByStatus = {
 	playing: number;
 };
 
-export type Color = '0f0f0f';
-
 export type EsrbRating = {
 	id: number;
 	name: string;
@@ -73,17 +51,17 @@ export type Genre = {
 };
 
 export type Domain =
-	| 'store.playstation.com'
-	| 'epicgames.com'
-	| 'store.steampowered.com'
-	| 'marketplace.xbox.com'
-	| 'microsoft.com'
-	| 'gog.com'
-	| 'nintendo.com'
-	| 'play.google.com'
-	| 'apps.apple.com';
+	| "store.playstation.com"
+	| "epicgames.com"
+	| "store.steampowered.com"
+	| "marketplace.xbox.com"
+	| "microsoft.com"
+	| "gog.com"
+	| "nintendo.com"
+	| "play.google.com"
+	| "apps.apple.com";
 
-export type Language = 'eng';
+export type Language = "eng";
 
 export type ParentPlatform = {
 	platform: EsrbRating;
@@ -119,7 +97,7 @@ export type Rating = {
 	percent: number;
 };
 
-export type Title = 'exceptional' | 'recommended' | 'meh' | 'skip';
+export type Title = "exceptional" | "recommended" | "meh" | "skip";
 
 export type ShortScreenshot = {
 	id: number;
@@ -130,3 +108,39 @@ export type Store = {
 	id: number;
 	store: Genre;
 };
+
+type ListItemIcon = { label: string; icon: JSX.Element; type: "ICON" }[];
+
+type ListItemAvatar = {
+	id: number;
+	name: string;
+	image_background: string;
+	type: "AVATAR";
+}[];
+
+type ListItemSimple = {
+	label: string;
+	type: "SIMPLE";
+};
+
+export type ListItems = ListItemIcon | ListItemAvatar | ListItemSimple;
+
+type ListItemIconSingle = {
+	type: "ICON";
+	item: { label: string; icon: JSX.Element };
+};
+
+type ListItemAvatarSingle = {
+	type: "AVATAR";
+	item: { id: number; name: string; image_background: string };
+};
+
+type ListItemSimpleSingle = {
+	type: "SIMPLE";
+	item: string;
+};
+
+export type ListItem =
+	| ListItemIconSingle
+	| ListItemAvatarSingle
+	| ListItemSimpleSingle;
