@@ -19,6 +19,7 @@ import {
 import { SiNintendo } from "react-icons/si";
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import useFetch from "@/hooks/useFetch";
 
 type ListItem = {
 	label: string;
@@ -30,7 +31,20 @@ type AccordionItems = {
 	items: ListItem[];
 };
 
+type GenreResponse = {
+	count: number;
+	results: Array<Genre>;
+};
+
+type Genre = {
+	id: number;
+	name: string;
+	image_background: string;
+};
+
 export default function SideNavigation() {
+	const { data, loading, error } = useFetch<GenreResponse>("/genres");
+
 	const iconClasses: string = "text-base";
 
 	const newReleasesItems: ListItem[] = [
@@ -130,9 +144,13 @@ export default function SideNavigation() {
 			selectionMode="multiple"
 			defaultExpandedKeys={["0"]}
 		>
-			{accordionItemList.map((item, key) => {
+			{accordionItemList.map((item) => {
 				return (
-					<AccordionItem key={key} arial-label={item.title} title={item.title}>
+					<AccordionItem
+						key={item.title}
+						title={item.title}
+						arial-label={item.title}
+					>
 						<ItemsList
 							listItems={item.items}
 							onAction={handleListItemClick}
