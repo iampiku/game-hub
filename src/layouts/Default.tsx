@@ -13,10 +13,10 @@ export default function DefaultLayout({ children }: Readonly<Props>) {
 			<TopBar />
 			<main className="w-full">
 				<div className="grid grid-cols-1 xl:grid-cols-12 lg:gap-2 mx-3">
-					<div className="col-span-2 w-full pb-4 md:pb-0">
+					<div className="col-span-3 w-full pb-4 md:pb-0">
 						<SideNavigation />
 					</div>
-					<section className="col-span-10">{children}</section>
+					<section className="col-span-9">{children}</section>
 				</div>
 			</main>
 			<footer className="py-10 text-center text-xl">

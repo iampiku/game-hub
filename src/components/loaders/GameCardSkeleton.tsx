@@ -3,8 +3,8 @@ import { Card, CardBody, Skeleton } from "@nextui-org/react";
 export default function GameCardSkeleton() {
 	return (
 		<Card
-			isHoverable
 			isBlurred
+			isHoverable
 			className="shadow-lg mb-3 bg-white/10 lg:max-w-[480px]"
 		>
 			<CardBody>
@@ -24,10 +24,10 @@ export default function GameCardSkeleton() {
 						</Skeleton>
 					</div>
 					<Skeleton className="w-4/5 rounded-lg">
-						<div className="h-5 w-4/5 rounded-lg bg-default-200"></div>
+						<div className="h-4 w-4/5 rounded-lg bg-default-200"></div>
 					</Skeleton>
 					<Skeleton className="w-2/5 rounded-lg">
-						<div className="h-5 w-2/5 rounded-lg bg-default-300"></div>
+						<div className="h-4 w-2/5 rounded-lg bg-default-300"></div>
 					</Skeleton>
 				</div>
 			</CardBody>

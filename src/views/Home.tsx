@@ -1,5 +1,5 @@
 import DefaultLayout from "@/layouts/Default";
-import GameCardSkeleton from "@/components/loaders/GameCardSkeleton";
+
 import GameGrid from "@/components/GameGrid";
 
 import { results } from "../../apiResponse.json";
