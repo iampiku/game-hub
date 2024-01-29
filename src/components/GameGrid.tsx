@@ -6,9 +6,14 @@ import GameCardSkeleton from "@/components/loaders/GameCardSkeleton";
 interface Props {
 	games: Games[];
 	loading: boolean;
+	onGameClick: (selectedGame: Games) => void;
 }
 
-export default function GameGrid({ games, loading }: Readonly<Props>) {
+export default function GameGrid({
+	games,
+	loading,
+	onGameClick,
+}: Readonly<Props>) {
 	const cardCount = 6;
 
 	const CardSkeletonLoader = (): Array<JSX.Element> => {
@@ -22,10 +27,10 @@ export default function GameGrid({ games, loading }: Readonly<Props>) {
 	};
 
 	return (
-		<div className="columns-1 md:columns-2 lg:columns-3">
+		<div className="lg:columns-4 md:columns-3 sm:columns-2 columns-1 gap-3">
 			{loading && CardSkeletonLoader()}
 			{games.map((game) => {
-				return <GameCard key={game.id} game={game} />;
+				return <GameCard key={game.id} game={game} onCardClick={onGameClick} />;
 			})}
 		</div>
 	);

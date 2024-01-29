@@ -19,12 +19,13 @@ import {
 import { SiNintendo } from "react-icons/si";
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import useFetch from "@/hooks/useFetch";
 
-type ListItem = {
-	label: string;
-	icon: JSX.Element;
-};
+import { useSearchParams } from "react-router-dom";
+
+import useFetch from "@/hooks/useFetch";
+// import useLocalStorage from "@/hooks/useLocalStorage";
+
+import type { ListItem } from "@/types";
 
 type AccordionItems = {
 	title: string;
@@ -43,11 +44,24 @@ type Genre = {
 };
 
 export default function SideNavigation() {
-	const { data, loading, error } = useFetch<GenreResponse>("/genres");
+	const [filter, setFilter] = useSearchParams();
+	const { data } = useFetch<GenreResponse>("/genres");
+	// const { setItem, getItem } = useLocalStorage<ListItem>("genres");
 
 	const iconClasses: string = "text-base";
 
-	const newReleasesItems: ListItem[] = [
+	// function populateGenres() {
+	// 	const
+	// }
+
+	const genres =
+		data?.results.map(({ id, name, image_background }) => ({
+			id,
+			label: name,
+			imageUrl: image_background,
+		})) ?? [];
+
+	const newReleasesItems = [
 		{
 			label: "Last 30 days",
 			icon: <FaStar className={iconClasses} />,
@@ -65,7 +79,7 @@ export default function SideNavigation() {
 			icon: <FaCalendar className={iconClasses} />,
 		},
 	];
-	const topGames: ListItem[] = [
+	const topGames = [
 		{
 			label: "Best of the year",
 			icon: <FaTrophy className={iconClasses} />,
@@ -79,7 +93,7 @@ export default function SideNavigation() {
 			icon: <FaCrown className={iconClasses} />,
 		},
 	];
-	const platforms: ListItem[] = [
+	const platforms = [
 		{
 			label: "Windows",
 			icon: <FaWindows className={iconClasses} />,
@@ -88,30 +102,18 @@ export default function SideNavigation() {
 			label: "Play Station",
 			icon: <FaPlaystation className={iconClasses} />,
 		},
-		{
-			label: "Xbox",
-			icon: <FaXbox className={iconClasses} />,
-		},
+		{ label: "Xbox", icon: <FaXbox className={iconClasses} /> },
 		{
 			label: "Nintendo",
 			icon: <SiNintendo className={iconClasses} />,
 		},
-		{
-			label: "Linux",
-			icon: <FaLinux className={iconClasses} />,
-		},
+		{ label: "Linux", icon: <FaLinux className={iconClasses} /> },
 		{
 			label: "Android",
 			icon: <FaAndroid className={iconClasses} />,
 		},
-		{
-			label: "Apple",
-			icon: <FaApple className={iconClasses} />,
-		},
-		{
-			label: "Web",
-			icon: <FaGlobe className={iconClasses} />,
-		},
+		{ label: "Apple", icon: <FaApple className={iconClasses} /> },
+		{ label: "Web", icon: <FaGlobe className={iconClasses} /> },
 		{
 			label: "Phone",
 			icon: <FaMobile className={iconClasses} />,
@@ -131,9 +133,14 @@ export default function SideNavigation() {
 			title: "Platforms",
 			items: platforms,
 		},
+		{
+			title: "Genres",
+			items: genres,
+		},
 	];
 
-	function handleListItemClick(item: string) {
+	function handleListItemClick(item: ListItem) {
+		setFilter({});
 		console.log(item);
 	}
 
@@ -142,17 +149,17 @@ export default function SideNavigation() {
 			isCompact
 			variant="splitted"
 			selectionMode="multiple"
-			defaultExpandedKeys={["0"]}
+			defaultExpandedKeys={["New Releases"]}
 		>
-			{accordionItemList.map((item) => {
+			{accordionItemList.map((accordionItem) => {
 				return (
 					<AccordionItem
-						key={item.title}
-						title={item.title}
-						arial-label={item.title}
+						key={accordionItem.title}
+						title={accordionItem.title}
+						arial-label={accordionItem.title}
 					>
 						<ItemsList
-							listItems={item.items}
+							listItems={accordionItem.items}
 							onAction={handleListItemClick}
 						></ItemsList>
 					</AccordionItem>

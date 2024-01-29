@@ -1,20 +1,22 @@
-import {
-	Navbar,
-	NavbarContent,
-	NavbarItem,
-	Input,
-	Switch,
-} from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, Switch } from "@nextui-org/react";
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useSearchParams } from "react-router-dom";
+
 import useLocalStorage from "@/hooks/useLocalStorage";
+
+import SearchInput from "./SearchInput";
 
 export default function TopBar() {
 	const { setItem, getItem } = useLocalStorage<boolean>("isDark");
 
-	const [search, setSearch] = useState("");
 	const [isDark, setIsDark] = useState(!!getItem());
+	const [search, setSearch] = useSearchParams();
+
+	function updateSearchParams(query: string) {
+		query.length === 0 ? setSearch({}) : setSearch({ query });
+	}
 
 	const updateAppTheme = useCallback(
 		(isDark: boolean) => {
@@ -41,17 +43,7 @@ export default function TopBar() {
 					</p>
 				</NavbarItem>
 				<NavbarItem className="w-full">
-					<Input
-						type="text"
-						variant="flat"
-						isClearable
-						size="sm"
-						aria-label="Search"
-						radius="lg"
-						value={search}
-						placeholder="Search Games...🔍"
-						onValueChange={setSearch}
-					></Input>
+					<SearchInput handleSearch={updateSearchParams} />
 				</NavbarItem>
 				<NavbarItem>
 					<Switch

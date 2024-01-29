@@ -109,38 +109,74 @@ export type Store = {
 	store: Genre;
 };
 
-type ListItemIcon = { label: string; icon: JSX.Element; type: "ICON" }[];
+export type ListItem = {
+	label: string;
+	imageUrl?: string;
+	icon?: JSX.Element;
+};
 
-type ListItemAvatar = {
+export type GameDetails = {
+	id: number;
+	slug: string;
+	name: string;
+	name_original: string;
+	description: string;
+	metacritic: number;
+	released: Date;
+	tba: boolean;
+	updated: Date;
+	background_image: string;
+	background_image_additional: string;
+	website: string;
+	rating: number;
+	rating_top: number;
+	ratings: Rating[];
+	reactions: { [key: string]: number };
+	added: number;
+	added_by_status: AddedByStatus;
+	playtime: number;
+	screenshots_count: number;
+	movies_count: number;
+	creators_count: number;
+	achievements_count: number;
+	parent_achievements_count: number;
+	reddit_url: string;
+	reddit_name: string;
+	reddit_description: string;
+	reddit_logo: string;
+	reddit_count: number;
+	twitch_count: number;
+	youtube_count: number;
+	reviews_text_count: number;
+	ratings_count: number;
+	suggestions_count: number;
+	alternative_names: string[];
+	metacritic_url: string;
+	parents_count: number;
+	additions_count: number;
+	game_series_count: number;
+	user_game: null;
+	reviews_count: number;
+	saturated_color: string;
+	dominant_color: string;
+	parent_platforms: ParentPlatform[];
+	platforms: PlatformElement[];
+	stores: Store[];
+	developers: Developer[];
+	genres: Developer[];
+	tags: Developer[];
+	publishers: Developer[];
+	esrb_rating: EsrbRating;
+	clip: null;
+	description_raw: string;
+};
+
+export interface Developer {
 	id: number;
 	name: string;
+	slug: string;
+	games_count: number;
 	image_background: string;
-	type: "AVATAR";
-}[];
-
-type ListItemSimple = {
-	label: string;
-	type: "SIMPLE";
-};
-
-export type ListItems = ListItemIcon | ListItemAvatar | ListItemSimple;
-
-type ListItemIconSingle = {
-	type: "ICON";
-	item: { label: string; icon: JSX.Element };
-};
-
-type ListItemAvatarSingle = {
-	type: "AVATAR";
-	item: { id: number; name: string; image_background: string };
-};
-
-type ListItemSimpleSingle = {
-	type: "SIMPLE";
-	item: string;
-};
-
-export type ListItem =
-	| ListItemIconSingle
-	| ListItemAvatarSingle
-	| ListItemSimpleSingle;
+	domain?: string;
+	language?: Language;
+}

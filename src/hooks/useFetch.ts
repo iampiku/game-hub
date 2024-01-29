@@ -6,15 +6,20 @@ import { CanceledError } from "axios";
 export default function useFetch<T>(endPoint: string) {
 	const [data, setData] = useState<T | null>(null);
 	const [loading, setLoading] = useState(false);
-	const [errorMessage, setErrorMessage] = useState("");
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
 		setLoading(true);
 		const controller = new AbortController();
 
 		apiClient
-			.get(endPoint)
-			.then((response) => setData(response.data))
+			.get<T>(endPoint, {
+				signal: controller.signal,
+			})
+			.then((response) => {
+				setData(response.data);
+				setErrorMessage(null);
+			})
 			.catch((error) => {
 				if (error instanceof CanceledError) return;
 				setErrorMessage(error.toString());

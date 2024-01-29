@@ -1,12 +1,16 @@
-import DefaultLayout from "@/layouts/Default";
+import SearchLayout from "@/layouts/Search";
+
+import GameInfo from "@/components/GameInfo";
 
 import { useParams } from "react-router-dom";
 
 export default function SearchInfo() {
 	const { id } = useParams();
 	return (
-		<DefaultLayout>
-			<span>hi from search SearchInfo {id}</span>
-		</DefaultLayout>
+		<SearchLayout>
+			<div className="col-span-12">
+				<GameInfo gameId={id ?? ""} />
+			</div>
+		</SearchLayout>
 	);
 }
