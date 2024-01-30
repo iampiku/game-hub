@@ -3,10 +3,10 @@ import axiosClient from "../api";
 
 type Params = {
 	id?: string;
-	page: number;
+	page?: number;
 	genre?: string;
 	search?: string;
-	page_size: number;
+	page_size?: number;
 	platforms?: string;
 };
 
@@ -21,10 +21,11 @@ const _requestErrorHandler = (error: unknown) => {
 	error instanceof AxiosError
 		? console.error(error.message)
 		: console.error("Oops! something went wrong");
+	return null;
 };
 
 function _requestSuccessHandler<T>(response: AxiosResponse) {
-	return response.statusText === "OK" ? (response.data as T) : null;
+	return response.status === 200 ? (response.data as T) : null;
 }
 
 async function _makeRequest<T>(
@@ -40,8 +41,7 @@ async function _makeRequest<T>(
 		});
 		return _requestSuccessHandler(response);
 	} catch (error) {
-		_requestErrorHandler(error);
-		return null;
+		return _requestErrorHandler(error);
 	}
 }
 
@@ -49,9 +49,9 @@ export async function gameDetailService<T>(
 	signal: AbortSignal,
 	params: Params
 ) {
-	if ("gameId" in params)
-		return _makeRequest<T>(signal, `${API_URLS.BASE_URL}/${params.gameId}`);
-	else throw new Error("For game details gameId is required");
+	if ("id" in params)
+		return _makeRequest<T>(signal, `${API_URLS.BASE_URL}/${params.id}`);
+	else throw new Error("For game details id is required");
 }
 
 export async function gameService<T>(signal: AbortSignal, params: Params) {

@@ -62,10 +62,12 @@ export default function GameCard({ game, onCardClick }: Readonly<Props>) {
 						})}
 					</div>
 					<div className="flex flex-wrap justify-between gap-2 pb-3">
-						<div className="flex gap-2 text-xl">
-							<PlatformIcons platformNames={platformNames} />
-						</div>
-						<CriticScore score={game.metacritic} />
+						{platformNames.length > 0 && (
+							<div className="flex gap-2 text-xl">
+								<PlatformIcons platformNames={platformNames} />
+							</div>
+						)}
+						{game.metacritic > 0 && <CriticScore score={game.metacritic} />}
 					</div>
 					<p className="font-semibold text-2xl">
 						<span className="pr-2">{game.name}</span>

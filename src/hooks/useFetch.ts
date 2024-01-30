@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import apiClient from "@/api";
-import { CanceledError } from "axios";
+import { AxiosError, CanceledError } from "axios";
 
 export default function useFetch<T>(endPoint: string) {
 	const [data, setData] = useState<T | null>(null);
@@ -20,9 +20,10 @@ export default function useFetch<T>(endPoint: string) {
 				setData(response.data);
 				setErrorMessage(null);
 			})
-			.catch((error) => {
+			.catch((error: AxiosError) => {
 				if (error instanceof CanceledError) return;
-				setErrorMessage(error.toString());
+
+				setErrorMessage(error.message);
 				setData(null);
 			})
 			.finally(() => setLoading(false));

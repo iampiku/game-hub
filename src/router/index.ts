@@ -1,5 +1,5 @@
 import Home from "@/views/Home";
-import SearchInfo from "@/views/SearchInfo";
+import GameInfo from "@/views/GameInfo";
 
 import { createBrowserRouter } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const routes = createBrowserRouter([
 	},
 	{
 		path: "/game/:id",
-		Component: SearchInfo,
+		Component: GameInfo,
 	},
 ]);
 

@@ -14,9 +14,7 @@ export default function SearchInput({ handleSearch }: Readonly<Props>) {
 		handleSearch(search);
 	}
 
-	function onClearText() {
-		handleSearch("");
-	}
+	const onClearText = () => handleSearch("");
 
 	return (
 		<Input
