@@ -10,14 +10,13 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
 	const navigate = useNavigate();
-	// const [search] = useSearchParams();
+	const [search] = useSearchParams();
 
 	const { data, isLoading, isError } = useQuery({
-		queryKey: ["results"],
+		queryKey: ["games"],
 		queryFn: ({ signal }) =>
 			gameService<{ results: Games[] }>(signal, { page: 1, page_size: 10 }),
 	});
-	console.log(data);
 
 	function onGameClick(selectedGame: Games) {
 		navigate(`game/${selectedGame.id}`);

@@ -1,4 +1,4 @@
-import { Spinner } from "@nextui-org/react";
+import { Card, CardBody, Spinner } from "@nextui-org/react";
 
 import { GameDetails } from "@/types";
 
@@ -23,7 +23,11 @@ export default function GameInfo({
 					label="Loading game details..."
 				></Spinner>
 			)}
-			<span>{gameDetails && JSON.stringify(gameDetails)}</span>
+			{gameDetails && (
+				<Card isBlurred className="bg-white/30">
+					<CardBody>{gameDetails.description_raw}</CardBody>
+				</Card>
+			)}
 		</>
 	);
 }

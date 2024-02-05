@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse, CanceledError } from "axios";
 import axiosClient from "../api";
 
 type Params = {
@@ -18,10 +18,10 @@ enum API_URLS {
 }
 
 const _requestErrorHandler = (error: unknown) => {
+	if (error instanceof CanceledError) return;
 	error instanceof AxiosError
 		? console.error(error.message)
 		: console.error("Oops! something went wrong");
-	return null;
 };
 
 function _requestSuccessHandler<T>(response: AxiosResponse) {
@@ -33,7 +33,7 @@ async function _makeRequest<T>(
 	apiUrl: string,
 	params?: Params
 ): Promise<T | null> {
-	const apiParams = apiUrl === API_URLS.BASE_URL ? { ...params } : {};
+	const apiParams = apiUrl === API_URLS.BASE_URL && params ? { ...params } : {};
 	try {
 		const response = await axiosClient.get<T>(apiUrl, {
 			signal,
