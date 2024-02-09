@@ -5,9 +5,9 @@ interface Props {
 }
 
 export default function CriticScore({ score }: Readonly<Props>) {
-	const chipColor = score > 90 ? "primary" : "warning";
+	const chipColor = score > 90 ? "primary" : "secondary";
 	return (
-		<Chip color={chipColor} variant="flat">
+		<Chip color={chipColor} variant="shadow">
 			<Tooltip content="Meta Critic Score">
 				<span className="font-semibold">{score}</span>
 			</Tooltip>

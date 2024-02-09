@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
 
 type ImageItem = {
 	id: string;
@@ -10,37 +10,78 @@ interface Props {
 	imageItems: ImageItem[];
 }
 
-import { Image, Card, CardBody } from "@nextui-org/react";
+import { flushSync } from "react-dom";
+import { useState, useCallback, useEffect } from "react";
+
+import { Image } from "@nextui-org/react";
+
+const TWEEN_FACTOR = 1.2;
 
 export default function ImageCarousel({ imageItems }: Readonly<Props>) {
+	const [tweenValues, setTweenValues] = useState<number[]>([]);
+	const [emblaRef, emblaApi] = useEmblaCarousel();
+
+	const onScroll = useCallback(() => {
+		if (!emblaApi) return;
+
+		const engine = emblaApi.internalEngine();
+		const scrollProgress = emblaApi.scrollProgress();
+
+		const styles = emblaApi.scrollSnapList().map((scrollSnap, index) => {
+			let diffToTarget = scrollSnap - scrollProgress;
+
+			if (engine.options.loop) {
+				engine.slideLooper.loopPoints.forEach((loopItem) => {
+					const target = loopItem.target();
+					if (index === loopItem.index && target !== 0) {
+						const sign = Math.sign(target);
+						if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress);
+						if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress);
+					}
+				});
+			}
+			return diffToTarget * (-1 / TWEEN_FACTOR) * 100;
+		});
+		setTweenValues(styles);
+	}, [emblaApi, setTweenValues]);
+
+	useEffect(() => {
+		if (!emblaApi) return;
+		onScroll();
+		emblaApi.on("scroll", () => {
+			flushSync(() => onScroll());
+		});
+		emblaApi.on("reInit", onScroll);
+	}, [emblaApi, onScroll]);
+
 	return (
-		<AnimatePresence>
-			<motion.div className="">
-				<motion.div
-					drag="x"
-					className="flex gap-2 p-24"
-					dragConstraints={{ right: 0, left: -1100 }}
-					dragTransition={{ bounceStiffness: 600, bounceDamping: 8 }}
-					animate={{ scale: [1, 1, 1, 1, 1], rotate: [0, 30, 60, 240, 360] }}
-				>
-					{imageItems.map((image) => {
-						return (
-							<motion.div
-								key={image.id}
-								whileHover={{ scale: 1.2 }}
-								whileTap={{ scale: 2 }}
-								transition={{ duration: 3 }}
-							>
-								<Card isBlurred isHoverable className="max-w-[800px]">
-									<CardBody>
-										<Image src={image.src} alt={image.alt}></Image>
-									</CardBody>
-								</Card>
-							</motion.div>
-						);
-					})}
-				</motion.div>
-			</motion.div>
-		</AnimatePresence>
+		<div className="embla">
+			<div className="embla__viewport" ref={emblaRef}>
+				<div className="embla__container">
+					{imageItems.map((imageItem, index) => (
+						<div className="embla__slide" key={imageItem.id}>
+							<div className="embla__parallax">
+								<div
+									className="embla__parallax__layer"
+									style={{
+										...(tweenValues.length && {
+											transform: `translateX(${tweenValues[index]}%)`,
+										}),
+									}}
+								>
+									<Image
+										isZoomed
+										isBlurred
+										className="embla__slide__img"
+										src={imageItem.src}
+										alt={imageItem.alt}
+									/>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
 	);
 }
