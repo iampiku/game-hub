@@ -1,5 +1,3 @@
-import useEmblaCarousel from "embla-carousel-react";
-
 type ImageItem = {
 	id: string;
 	src: string;
@@ -10,16 +8,59 @@ interface Props {
 	imageItems: ImageItem[];
 }
 
+import "@/styles/embla.css";
+
 import { flushSync } from "react-dom";
+
+/**
+ * Components
+ */
+import { Image, Card } from "@nextui-org/react";
+
+/**
+ * Hooks
+ */
+import useEmblaCarousel from "embla-carousel-react";
+import { useParams } from "react-router-dom";
+import { useQuery, QueryClient } from "@tanstack/react-query";
 import { useState, useCallback, useEffect } from "react";
 
-import { Image } from "@nextui-org/react";
+const queryClient = new QueryClient();
+
+/**
+ * Api service
+ */
+import { screenshotService } from "@/service";
 
 const TWEEN_FACTOR = 1.2;
 
-export default function ImageCarousel({ imageItems }: Readonly<Props>) {
+export default function ImageCarousel() {
 	const [tweenValues, setTweenValues] = useState<number[]>([]);
 	const [emblaRef, emblaApi] = useEmblaCarousel();
+	const { id } = useParams();
+
+	const [screenshots, setScreenshots] = useState<
+		{ id: number; src: string; alt: string }[]
+	>([]);
+
+	const { data } = useQuery({
+		queryKey: ["screenshots"],
+		queryFn: ({ signal }) =>
+			screenshotService<{ results: { id: number; image: string }[] }>(signal, {
+				game_pk: id,
+			}),
+	});
+
+	useEffect(() => {
+		if (data?.results) {
+			const screenshots = data.results.map(({ id, image }) => ({
+				id,
+				src: image,
+				alt: "game_screenshot",
+			}));
+			setScreenshots(screenshots);
+		}
+	}, [data?.results]);
 
 	const onScroll = useCallback(() => {
 		if (!emblaApi) return;
@@ -43,7 +84,7 @@ export default function ImageCarousel({ imageItems }: Readonly<Props>) {
 			return diffToTarget * (-1 / TWEEN_FACTOR) * 100;
 		});
 		setTweenValues(styles);
-	}, [emblaApi, setTweenValues]);
+	}, [emblaApi]);
 
 	useEffect(() => {
 		if (!emblaApi) return;
@@ -58,7 +99,7 @@ export default function ImageCarousel({ imageItems }: Readonly<Props>) {
 		<div className="embla">
 			<div className="embla__viewport" ref={emblaRef}>
 				<div className="embla__container">
-					{imageItems.map((imageItem, index) => (
+					{screenshots.map((imageItem, index) => (
 						<div className="embla__slide" key={imageItem.id}>
 							<div className="embla__parallax">
 								<div
@@ -69,13 +110,16 @@ export default function ImageCarousel({ imageItems }: Readonly<Props>) {
 										}),
 									}}
 								>
-									<Image
-										isZoomed
-										isBlurred
-										className="embla__slide__img"
-										src={imageItem.src}
-										alt={imageItem.alt}
-									/>
+									<Card isBlurred radius="none">
+										<Image
+											radius="none"
+											isBlurred
+											content="cover"
+											src={imageItem.src}
+											alt={imageItem.alt}
+											className="embla__slide__img "
+										/>
+									</Card>
 								</div>
 							</div>
 						</div>

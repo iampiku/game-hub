@@ -18,17 +18,17 @@ export default function SearchInput({ handleSearch }: Readonly<Props>) {
 
 	return (
 		<Input
-			type="text"
-			variant="flat"
-			isClearable
 			size="sm"
-			aria-label="Search"
+			type="text"
+			isClearable
 			radius="lg"
+			variant="flat"
 			value={search}
-			placeholder="Search Games...🔍"
-			onValueChange={setSearch}
-			onKeyDown={(event) => onEnter(event.key)}
+			aria-label="Search"
 			onClear={onClearText}
+			onValueChange={setSearch}
+			placeholder="Search Games...🔍"
+			onKeyDown={(event) => onEnter(event.key)}
 		></Input>
 	);
 }

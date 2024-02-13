@@ -22,16 +22,20 @@ function GameDetailsCard({
 	gameDetails,
 }: Readonly<{ gameDetails: GameDetails }>) {
 	return (
-		<Card isBlurred className="">
+		<Card isBlurred className="h-full">
 			<CardHeader className="flex gap-2 justify-end">
 				<header className="font-sans text-3xl uppercase">
 					{gameDetails.name_original}
 				</header>
-				<CriticScore score={gameDetails.metacritic} />
+				{gameDetails.metacritic !== null && (
+					<CriticScore score={gameDetails.metacritic} />
+				)}
 			</CardHeader>
-			<CardBody>
-				<div className="flex flex-col gap-1 items-end pb-2">
-					{/* <ImageCarousel imageItems={gameDetails}/> */}
+			<CardBody className="grid grid-cols-12 w-full ">
+				<div className="col-span-8 h-full">
+					<ImageCarousel />
+				</div>
+				<div className="flex flex-col gap-1 items-end pb-2 col-span-4 h-full">
 					<div className="flex gap-2 pb-2">
 						<PlatformIcons
 							platformNames={gameDetails.parent_platforms.map(
@@ -39,10 +43,14 @@ function GameDetailsCard({
 							)}
 						/>
 					</div>
-					<div className="">
-						Release Date:{" "}
+					<div className="flex flex-col text-right">
 						{gameDetails.released &&
 							new Date(gameDetails.released).toLocaleDateString()}
+						<span>
+							{gameDetails.developers.map((developer) => {
+								return <span key={developer.id}>{developer.name}</span>;
+							})}
+						</span>
 					</div>
 					<ScrollShadow className="max-w-[360px] max-h-[300px] scroll-smooth">
 						<p className="text-right pr-2">{gameDetails.description_raw}</p>
