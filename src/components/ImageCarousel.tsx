@@ -22,10 +22,8 @@ import { Image, Card } from "@nextui-org/react";
  */
 import useEmblaCarousel from "embla-carousel-react";
 import { useParams } from "react-router-dom";
-import { useQuery, QueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState, useCallback, useEffect } from "react";
-
-const queryClient = new QueryClient();
 
 /**
  * Api service
@@ -35,9 +33,9 @@ import { screenshotService } from "@/service";
 const TWEEN_FACTOR = 1.2;
 
 export default function ImageCarousel() {
-	const [tweenValues, setTweenValues] = useState<number[]>([]);
-	const [emblaRef, emblaApi] = useEmblaCarousel();
 	const { id } = useParams();
+	const [emblaRef, emblaApi] = useEmblaCarousel();
+	const [tweenValues, setTweenValues] = useState<number[]>([]);
 
 	const [screenshots, setScreenshots] = useState<
 		{ id: number; src: string; alt: string }[]
@@ -110,9 +108,8 @@ export default function ImageCarousel() {
 										}),
 									}}
 								>
-									<Card isBlurred radius="none">
+									<Card isBlurred className="p-2">
 										<Image
-											radius="none"
 											isBlurred
 											content="cover"
 											src={imageItem.src}

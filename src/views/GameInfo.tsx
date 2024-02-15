@@ -7,9 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { GameDetails } from "@/types";
 
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, CardBody } from "@nextui-org/react";
 
 export default function GameInfo() {
 	const { id } = useParams();
@@ -24,26 +23,15 @@ export default function GameInfo() {
 		if (data) setGameDetails(data);
 	}, [data]);
 
-	const backGroundStyle = useMemo(() => {
-		return gameDetails
-			? { backgroundImage: `url(${gameDetails.background_image})` }
-			: {};
-	}, [gameDetails]);
-
 	return (
 		<SearchLayout>
-			<Card
-				style={backGroundStyle}
-				className="col-span-12 bg-cover bg-center bg-gradient-to-t from-zinc-900 to-zinc-600 z-10 mb-10"
-			>
-				<CardBody>
-					<GameInfoContainer
-						error={isError}
-						loading={isLoading}
-						gameDetails={gameDetails ?? null}
-					/>
-				</CardBody>
-			</Card>
+			<div className="col-span-12 mb-10 mt-3">
+				<GameInfoContainer
+					error={isError}
+					loading={isLoading}
+					gameDetails={gameDetails ?? null}
+				/>
+			</div>
 		</SearchLayout>
 	);
 }

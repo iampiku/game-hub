@@ -2,22 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+	body {
+		font-family: "Poppins", sans-serif;
+		font-weight: 400;
+		font-style: normal;
+	}
+}
+
 ::-webkit-scrollbar {
-   width: 12px;
-   /* width of the entire scrollbar */
+	width: 12px;
+	/* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-   background: orange;
-   border-radius: 40px;
-   /* color of the tracking area */
+	border-radius: 40px;
+	background: black;
+	background-color: currentColor;
 }
 
 ::-webkit-scrollbar-thumb {
-   background-color: blue;
-   /* color of the scroll thumb */
-   border-radius: 40px;
-   /* roundness of the scroll thumb */
-   border: 3px solid orange;
-   /* creates padding around scroll thumb */
+	border-radius: 40px;
+	background-color: rgba(255, 255, 255, 0.5);
 }

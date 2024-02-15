@@ -22,39 +22,44 @@ function GameDetailsCard({
 	gameDetails,
 }: Readonly<{ gameDetails: GameDetails }>) {
 	return (
-		<Card isBlurred className="h-full">
+		<Card className="min-h-full">
 			<CardHeader className="flex gap-2 justify-end">
-				<header className="font-sans text-3xl uppercase">
+				<header className="text-2xl md:text-4xl lg:text-6xl uppercase">
 					{gameDetails.name_original}
 				</header>
+
 				{gameDetails.metacritic !== null && (
 					<CriticScore score={gameDetails.metacritic} />
 				)}
 			</CardHeader>
-			<CardBody className="grid grid-cols-12 w-full ">
-				<div className="col-span-8 h-full">
+			<CardBody className="grid gird-cols-1 lg:grid-cols-12">
+				<div className="lg:col-span-8">
 					<ImageCarousel />
 				</div>
-				<div className="flex flex-col gap-1 items-end pb-2 col-span-4 h-full">
-					<div className="flex gap-2 pb-2">
+				<div className="flex flex-col gap-1 text-sm lg:items-end pb-2 lg:col-span-4 ">
+					<header className="text-4xl">About</header>
+					<ScrollShadow hideScrollBar className="max-h-[400px] scroll-smooth">
+						<p className="pr-2">{gameDetails.description_raw}</p>
+					</ScrollShadow>
+
+					{/* <div className="flex gap-2 pb-2">
 						<PlatformIcons
 							platformNames={gameDetails.parent_platforms.map(
 								(p) => p.platform.slug
 							)}
 						/>
 					</div>
-					<div className="flex flex-col text-right">
-						{gameDetails.released &&
-							new Date(gameDetails.released).toLocaleDateString()}
-						<span>
-							{gameDetails.developers.map((developer) => {
-								return <span key={developer.id}>{developer.name}</span>;
-							})}
-						</span>
-					</div>
-					<ScrollShadow className="max-w-[360px] max-h-[300px] scroll-smooth">
-						<p className="text-right pr-2">{gameDetails.description_raw}</p>
-					</ScrollShadow>
+					<div className="font-semibold space-y-1">
+						<p>
+							{gameDetails.released &&
+								new Date(gameDetails.released).toLocaleDateString()}
+						</p>
+						<p>
+							{gameDetails.developers
+								.map((developer) => developer.name)
+								.join(",")}
+						</p>
+					</div> */}
 				</div>
 			</CardBody>
 		</Card>
@@ -77,7 +82,7 @@ export default function GameInfo({
 			{loading && (
 				<Spinner
 					size="lg"
-					className="flex justify-center align-middle min-h-full"
+					className="flex justify-center align-middle min-h-screen"
 					label="Loading game details..."
 				></Spinner>
 			)}
