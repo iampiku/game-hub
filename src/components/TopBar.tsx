@@ -15,7 +15,8 @@ export default function TopBar() {
 	const [search, setSearch] = useSearchParams();
 
 	function updateSearchParams(query: string) {
-		query.length === 0 ? setSearch({}) : setSearch({ query });
+		if (query.length !== 0) setSearch({ query }, { replace: true });
+		else search.delete("query");
 	}
 
 	const updateAppTheme = useCallback(

@@ -11,7 +11,7 @@ export default function Search({ children }: Readonly<Props>) {
 		<div className="min-h-screen">
 			<TopBar />
 			<main className="w-full h-full">
-				<div className="grid grid-cols-12 gap-2 mx-6">{children}</div>
+				<div className="grid grid-cols-12 mx-6">{children}</div>
 			</main>
 		</div>
 	);

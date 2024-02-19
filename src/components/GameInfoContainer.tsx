@@ -2,8 +2,12 @@ import {
 	Card,
 	CardBody,
 	CardHeader,
+	CardFooter,
+	Accordion,
+	AccordionItem,
 	Spinner,
 	ScrollShadow,
+	Divider,
 } from "@nextui-org/react";
 
 import { GameDetails } from "@/types";
@@ -18,9 +22,15 @@ interface Props {
 	error: boolean;
 }
 
+import { useState } from "react";
+
 function GameDetailsCard({
 	gameDetails,
 }: Readonly<{ gameDetails: GameDetails }>) {
+	const [showMoreInfo, setShowMoreInfo] = useState(false);
+
+	const onSelectionChange = () => setShowMoreInfo(!showMoreInfo);
+
 	return (
 		<Card className="min-h-full">
 			<CardHeader className="flex gap-2 justify-end">
@@ -32,35 +42,50 @@ function GameDetailsCard({
 					<CriticScore score={gameDetails.metacritic} />
 				)}
 			</CardHeader>
-			<CardBody className="grid gird-cols-1 lg:grid-cols-12">
+			<CardBody className="grid gird-cols-1 gap-2 lg:grid-cols-12">
 				<div className="lg:col-span-8">
 					<ImageCarousel />
 				</div>
-				<div className="flex flex-col gap-1 text-sm lg:items-end pb-2 lg:col-span-4 ">
-					<header className="text-4xl">About</header>
-					<ScrollShadow hideScrollBar className="max-h-[400px] scroll-smooth">
-						<p className="pr-2">{gameDetails.description_raw}</p>
-					</ScrollShadow>
 
-					{/* <div className="flex gap-2 pb-2">
-						<PlatformIcons
-							platformNames={gameDetails.parent_platforms.map(
-								(p) => p.platform.slug
-							)}
-						/>
-					</div>
-					<div className="font-semibold space-y-1">
-						<p>
-							{gameDetails.released &&
-								new Date(gameDetails.released).toLocaleDateString()}
-						</p>
-						<p>
-							{gameDetails.developers
-								.map((developer) => developer.name)
-								.join(",")}
-						</p>
-					</div> */}
-				</div>
+				<Card className="lg:col-span-4">
+					<CardHeader>
+						<header className="text-4xl">About</header>
+					</CardHeader>
+					<Divider></Divider>
+					<CardBody>
+						<ScrollShadow hideScrollBar className="max-h-[400px] scroll-smooth">
+							<p className="pr-2">{gameDetails.description_raw}</p>
+						</ScrollShadow>
+					</CardBody>
+					<Divider></Divider>
+					<CardFooter>
+						<Accordion isCompact onSelectionChange={onSelectionChange}>
+							<AccordionItem
+								title={showMoreInfo ? "Close" : "Show More"}
+								aria-label={showMoreInfo ? "Close" : "Show More"}
+							>
+								<div className="font-semibold space-y-1">
+									<p>
+										{gameDetails.released &&
+											new Date(gameDetails.released).toLocaleDateString()}
+									</p>
+									<p>
+										{gameDetails.developers
+											.map((developer) => developer.name)
+											.join(", ")}
+									</p>
+								</div>
+								<div className="flex gap-2 py-2">
+									<PlatformIcons
+										platformNames={gameDetails.parent_platforms.map(
+											(p) => p.platform.slug
+										)}
+									/>
+								</div>
+							</AccordionItem>
+						</Accordion>
+					</CardFooter>
+				</Card>
 			</CardBody>
 		</Card>
 	);

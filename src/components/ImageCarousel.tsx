@@ -1,13 +1,3 @@
-type ImageItem = {
-	id: string;
-	src: string;
-	alt: string;
-};
-
-interface Props {
-	imageItems: ImageItem[];
-}
-
 import "@/styles/embla.css";
 
 import { flushSync } from "react-dom";
@@ -15,7 +5,7 @@ import { flushSync } from "react-dom";
 /**
  * Components
  */
-import { Image, Card } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 /**
  * Hooks
@@ -108,15 +98,14 @@ export default function ImageCarousel() {
 										}),
 									}}
 								>
-									<Card isBlurred className="p-2">
-										<Image
-											isBlurred
-											content="cover"
-											src={imageItem.src}
-											alt={imageItem.alt}
-											className="embla__slide__img "
-										/>
-									</Card>
+									<Image
+										isBlurred
+										radius="none"
+										content="cover"
+										src={imageItem.src}
+										alt={imageItem.alt}
+										className="embla__slide__img cursor-grab active:cursor-grabbing"
+									/>
 								</div>
 							</div>
 						</div>

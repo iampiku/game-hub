@@ -139,9 +139,20 @@ export default function SideNavigation() {
 		},
 	];
 
-	function handleListItemClick(item: ListItem) {
-		setFilter({});
-		console.log(item);
+	function handleListItemClick(selectedItem: ListItem) {
+		const filter: { [key: string]: string } = {};
+		for (const accordionItem of accordionItemList) {
+			const selected =
+				accordionItem.items.find((item) => item.label === selectedItem.label) ??
+				null;
+
+			if (selected) {
+				filter[accordionItem.title.toLowerCase()] =
+					selected.label.toLowerCase();
+				setFilter((previousFilter) => ({ ...previousFilter, ...filter }));
+				break;
+			}
+		}
 	}
 
 	return (

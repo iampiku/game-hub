@@ -10,10 +10,9 @@ import PlatformIcons from "@/components/PlatformIcons";
 
 interface Props {
 	game: Games;
-	onCardClick: (game: Games) => void;
 }
 
-export default function GameCard({ game, onCardClick }: Readonly<Props>) {
+export default function GameCard({ game }: Readonly<Props>) {
 	const platformNames = game.parent_platforms.map(
 		({ platform }) => platform.slug
 	);
@@ -39,7 +38,6 @@ export default function GameCard({ game, onCardClick }: Readonly<Props>) {
 				isHoverable
 				isBlurred
 				isPressable
-				onClick={() => onCardClick(game)}
 				className="shadow-lg mb-3 bg-white/10 lg:max-w-[480px]"
 			>
 				<CardHeader>
