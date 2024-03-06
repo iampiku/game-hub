@@ -8,14 +8,16 @@ import {
 	Spinner,
 	ScrollShadow,
 	Divider,
+	Button,
+	Chip,
 } from "@nextui-org/react";
-
-import { GameDetails } from "@/types";
-
+import { Link } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 import CriticScore from "./CriticScore";
 import PlatformIcons from "./PlatformIcons";
 import ImageCarousel from "./ImageCarousel";
 
+import { GameDetails } from "@/types";
 interface Props {
 	gameDetails: GameDetails | null;
 	loading: boolean;
@@ -30,31 +32,44 @@ function GameDetailsCard({
 	const [showMoreInfo, setShowMoreInfo] = useState(false);
 
 	const onSelectionChange = () => setShowMoreInfo(!showMoreInfo);
+	const {
+		tags,
+		website,
+		released,
+		metacritic,
+		developers,
+		name_original,
+		description_raw,
+		parent_platforms,
+	} = gameDetails;
 
 	return (
 		<Card className="min-h-full">
-			<CardHeader className="flex gap-2 justify-end">
-				<header className="text-2xl md:text-4xl lg:text-6xl uppercase">
-					{gameDetails.name_original}
-				</header>
+			<CardHeader className="flex justify-between">
+				<Link to="/">
+					<Button isIconOnly variant="shadow" color="primary" size="sm">
+						<FaArrowLeft />
+					</Button>
+				</Link>
+				<header className="text-2xl md:text-4xl lg:text-6xl uppercase flex items-center gap-2">
+					<Link to={website}>{name_original}</Link>
 
-				{gameDetails.metacritic !== null && (
-					<CriticScore score={gameDetails.metacritic} />
-				)}
+					{metacritic !== null && <CriticScore score={metacritic} />}
+				</header>
 			</CardHeader>
 			<CardBody className="grid gird-cols-1 gap-2 lg:grid-cols-12">
 				<div className="lg:col-span-8">
 					<ImageCarousel />
 				</div>
 
-				<Card className="lg:col-span-4">
+				<Card className="lg:col-span-4 max-h-[400px]" isFooterBlurred isBlurred>
 					<CardHeader>
 						<header className="text-4xl">About</header>
 					</CardHeader>
 					<Divider></Divider>
 					<CardBody>
-						<ScrollShadow hideScrollBar className="max-h-[400px] scroll-smooth">
-							<p className="pr-2">{gameDetails.description_raw}</p>
+						<ScrollShadow hideScrollBar className=" scroll-smooth">
+							<p className="pr-2">{description_raw}</p>
 						</ScrollShadow>
 					</CardBody>
 					<Divider></Divider>
@@ -65,22 +80,22 @@ function GameDetailsCard({
 								aria-label={showMoreInfo ? "Close" : "Show More"}
 							>
 								<div className="font-semibold space-y-1">
-									<p>
-										{gameDetails.released &&
-											new Date(gameDetails.released).toLocaleDateString()}
-									</p>
-									<p>
-										{gameDetails.developers
-											.map((developer) => developer.name)
-											.join(", ")}
-									</p>
+									<p>{released && new Date(released).toLocaleDateString()}</p>
+									<p>{developers.map(({ name }) => name).join(", ")}</p>
 								</div>
 								<div className="flex gap-2 py-2">
 									<PlatformIcons
-										platformNames={gameDetails.parent_platforms.map(
-											(p) => p.platform.slug
-										)}
+										platformNames={parent_platforms.map((p) => p.platform.slug)}
 									/>
+								</div>
+								<div className="flex flex-wrap gap-2">
+									{tags.map(({ name, id }) => {
+										return (
+											<Chip size="sm" key={id} color="primary" variant="shadow">
+												{name}
+											</Chip>
+										);
+									})}
 								</div>
 							</AccordionItem>
 						</Accordion>

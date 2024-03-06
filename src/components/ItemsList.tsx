@@ -31,7 +31,7 @@ function ListStartContent({ type, listItem }: Readonly<ListContentProps>) {
 					{listItem.icon}
 				</Chip>
 			);
-		case null:
+		default:
 			return null;
 	}
 }
