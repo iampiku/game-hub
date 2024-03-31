@@ -4,7 +4,7 @@ import axiosClient from "../api";
 type Params = {
 	id?: string;
 	page?: number;
-	genre?: string;
+	genres?: string;
 	game_pk?: string;
 	search?: string;
 	page_size?: number;

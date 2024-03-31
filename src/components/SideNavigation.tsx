@@ -20,16 +20,14 @@ import { SiNintendo } from "react-icons/si";
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
-import { useSearchParams } from "react-router-dom";
-
 import useFetch from "@/hooks/useFetch";
-// import useLocalStorage from "@/hooks/useLocalStorage";
+import { useEffect, useState, useMemo } from "react";
 
-import type { ListItem } from "@/types";
+import type { MenuList, GenreMenu, Genre } from "@/types";
 
 type AccordionItems = {
 	title: string;
-	items: ListItem[];
+	items: MenuList[];
 };
 
 type GenreResponse = {
@@ -37,122 +35,201 @@ type GenreResponse = {
 	results: Array<Genre>;
 };
 
-type Genre = {
-	id: number;
-	name: string;
-	image_background: string;
-};
-
 export default function SideNavigation() {
-	const [filter, setFilter] = useSearchParams();
-	const { data } = useFetch<GenreResponse>("/genres");
-	// const { setItem, getItem } = useLocalStorage<ListItem>("genres");
-
-	const iconClasses: string = "text-base";
-
-	// function populateGenres() {
-	// 	const
-	// }
-
-	const genres =
-		data?.results.map(({ id, name, image_background }) => ({
-			id,
-			label: name,
-			imageUrl: image_background,
-		})) ?? [];
-
-	const newReleasesItems = [
+	const [menus, setMenus] = useState<MenuList[]>([
 		{
+			_selected: false,
 			label: "Last 30 days",
-			icon: <FaStar className={iconClasses} />,
+			type: "menu",
+			menuType: "newRelease",
+			icon: <FaStar className={"text-base"} />,
 		},
 		{
+			_selected: false,
 			label: "This week",
-			icon: <FaFire className={iconClasses} />,
+			type: "menu",
+			menuType: "newRelease",
+			icon: <FaFire className={"text-base"} />,
 		},
 		{
+			_selected: false,
 			label: "Next week",
-			icon: <FaPlay className={iconClasses} />,
+			type: "menu",
+			menuType: "newRelease",
+			icon: <FaPlay className={"text-base"} />,
 		},
 		{
+			_selected: false,
 			label: "Release Calender",
-			icon: <FaCalendar className={iconClasses} />,
+			type: "menu",
+			menuType: "newRelease",
+			icon: <FaCalendar className={"text-base"} />,
 		},
-	];
-	const topGames = [
 		{
+			_selected: false,
 			label: "Best of the year",
-			icon: <FaTrophy className={iconClasses} />,
+			type: "menu",
+			menuType: "topGames",
+			icon: <FaTrophy className={"text-base"} />,
 		},
 		{
+			_selected: false,
 			label: "Popular in 2023",
-			icon: <FaChartBar className={iconClasses} />,
+			type: "menu",
+			menuType: "topGames",
+			icon: <FaChartBar className={"text-base"} />,
 		},
 		{
+			_selected: false,
 			label: "All time up 250",
-			icon: <FaCrown className={iconClasses} />,
+			type: "menu",
+			menuType: "topGames",
+			icon: <FaCrown className={"text-base"} />,
 		},
-	];
-	const platforms = [
 		{
+			_selected: false,
 			label: "Windows",
-			icon: <FaWindows className={iconClasses} />,
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaWindows className={"text-base"} />,
 		},
 		{
+			_selected: false,
 			label: "Play Station",
-			icon: <FaPlaystation className={iconClasses} />,
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaPlaystation className={"text-base"} />,
 		},
-		{ label: "Xbox", icon: <FaXbox className={iconClasses} /> },
 		{
+			_selected: false,
+			label: "Xbox",
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaXbox className={"text-base"} />,
+		},
+		{
+			_selected: false,
 			label: "Nintendo",
-			icon: <SiNintendo className={iconClasses} />,
+			type: "menu",
+			menuType: "platforms",
+			icon: <SiNintendo className={"text-base"} />,
 		},
-		{ label: "Linux", icon: <FaLinux className={iconClasses} /> },
 		{
+			_selected: false,
+			label: "Linux",
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaLinux className={"text-base"} />,
+		},
+		{
+			_selected: false,
 			label: "Android",
-			icon: <FaAndroid className={iconClasses} />,
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaAndroid className={"text-base"} />,
 		},
-		{ label: "Apple", icon: <FaApple className={iconClasses} /> },
-		{ label: "Web", icon: <FaGlobe className={iconClasses} /> },
 		{
+			_selected: false,
+			label: "Apple",
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaApple className={"text-base"} />,
+		},
+		{
+			_selected: false,
+			label: "Web",
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaGlobe className={"text-base"} />,
+		},
+		{
+			_selected: false,
 			label: "Phone",
-			icon: <FaMobile className={iconClasses} />,
+			type: "menu",
+			menuType: "platforms",
+			icon: <FaMobile className={"text-base"} />,
 		},
-	];
+	]);
 
-	const accordionItemList: AccordionItems[] = [
-		{
-			title: "New Releases",
-			items: newReleasesItems,
-		},
-		{
-			title: "Top",
-			items: topGames,
-		},
-		{
-			title: "Platforms",
-			items: platforms,
-		},
-		{
-			title: "Genres",
-			items: genres,
-		},
-	];
+	const { data } = useFetch<GenreResponse>("/genres");
 
-	function handleListItemClick(selectedItem: ListItem) {
-		const filter: { [key: string]: string } = {};
-		for (const accordionItem of accordionItemList) {
-			const selected =
-				accordionItem.items.find((item) => item.label === selectedItem.label) ??
-				null;
-
-			if (selected) {
-				filter[accordionItem.title.toLowerCase()] =
-					selected.label.toLowerCase();
-				setFilter((previousFilter) => ({ ...previousFilter, ...filter }));
-				break;
-			}
+	useEffect(() => {
+		if (data) {
+			const genres: GenreMenu[] = data.results.map(
+				({ id, name, image_background }) => ({
+					id,
+					label: name,
+					type: "genre",
+					imageUrl: image_background,
+					_selected: false,
+				})
+			);
+			setMenus((previousMenus) => [...previousMenus, ...genres]);
 		}
+	}, [data]);
+
+	const accordionItemList: AccordionItems[] = useMemo(() => {
+		return [
+			{
+				title: "New Releases",
+				items: menus.filter(
+					(menu) => menu.type === "menu" && menu.menuType === "newRelease"
+				),
+			},
+			{
+				title: "Top",
+				items: menus.filter(
+					(menu) => menu.type === "menu" && menu.menuType === "topGames"
+				),
+			},
+			{
+				title: "Platforms",
+				items: menus.filter(
+					(menu) => menu.type === "menu" && menu.menuType === "platforms"
+				),
+			},
+			{
+				title: "Genres",
+				items: menus.filter((menu) => menu.type === "genre"),
+			},
+		];
+	}, [menus]);
+
+	function handleMenuClick(selectedMenu: MenuList) {
+		const updatedMenus = menus.map((menu) => {
+			if (menu.type === "genre" && selectedMenu.type === "genre") {
+				if (menu.id === selectedMenu.id) return { ...selectedMenu };
+				else return { ...menu, _selected: false };
+			} else if (menu.type === "menu" && selectedMenu.type === "menu") {
+				if (
+					menu.menuType === "newRelease" &&
+					selectedMenu.menuType === "newRelease"
+				) {
+					if (menu.label === selectedMenu.label) return { ...selectedMenu };
+					else return { ...menu, _selected: false };
+				} else if (
+					menu.menuType === "platforms" &&
+					selectedMenu.menuType === "platforms"
+				) {
+					if (menu.label === selectedMenu.label) return { ...selectedMenu };
+					else return { ...menu, _selected: false };
+				} else if (
+					menu.menuType === "topGames" &&
+					selectedMenu.menuType === "topGames"
+				) {
+					if (menu.label === selectedMenu.label) return { ...selectedMenu };
+					else return { ...menu, _selected: false };
+				} else return { ...menu };
+			} else return { ...menu };
+		});
+
+		setMenus(updatedMenus);
+		setFilterParams();
+	}
+
+	function setFilterParams() {
+		const selectedMenuItems = menus.filter((menu) => menu._selected);
+		console.log(selectedMenuItems);
 	}
 
 	return (
@@ -170,8 +247,8 @@ export default function SideNavigation() {
 						arial-label={accordionItem.title}
 					>
 						<ItemsList
-							listItems={accordionItem.items}
-							onAction={handleListItemClick}
+							menuList={accordionItem.items}
+							onAction={handleMenuClick}
 						></ItemsList>
 					</AccordionItem>
 				);

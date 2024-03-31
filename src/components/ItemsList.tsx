@@ -1,34 +1,32 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Listbox, ListboxItem, Chip, Avatar } from "@nextui-org/react";
 
-import type { ListItem } from "@/types";
+import type { MenuList } from "@/types";
 
 interface Props {
-	listTitle?: string;
-	listItems: ListItem[];
-	onAction: (item: ListItem) => void;
+	menuList: MenuList[];
+	onAction: (menu: MenuList) => void;
 }
 
 interface ListContentProps {
-	type: "Icon" | "Avatar" | null;
-	listItem: ListItem;
+	menu: MenuList;
 }
 
-function ListStartContent({ type, listItem }: Readonly<ListContentProps>) {
-	switch (type) {
-		case "Avatar":
+function ListStartContent({ menu }: Readonly<ListContentProps>) {
+	switch (menu.type) {
+		case "genre":
 			return (
 				<Avatar
 					size="sm"
 					radius="md"
 					alt="genre_img"
-					src={listItem.imageUrl}
+					src={menu.imageUrl}
 				></Avatar>
 			);
-		case "Icon":
+		case "menu":
 			return (
 				<Chip variant="shadow" size="sm" color="primary">
-					{listItem.icon}
+					{menu.icon}
 				</Chip>
 			);
 		default:
@@ -36,36 +34,21 @@ function ListStartContent({ type, listItem }: Readonly<ListContentProps>) {
 	}
 }
 
-export default function ItemsList({ listItems, onAction }: Readonly<Props>) {
-	const containsIcon = listItems.every((item) => item.icon);
-	const containsAvatar = listItems.every((item) => item.imageUrl);
-
-	function getItemType() {
-		if (containsIcon) return "Icon";
-		else if (containsAvatar) return "Avatar";
-		else return null;
-	}
-
-	const type = getItemType();
-
-	function onItemClick(key: string) {
-		const item = listItems.find((item) => item.label === key) ?? null;
-		if (item) onAction(item);
+export default function ItemsList({ menuList, onAction }: Readonly<Props>) {
+	function handleMenuSelection(menu: MenuList) {
+		onAction({ ...menu, _selected: true });
 	}
 
 	return (
-		<Listbox
-			variant="faded"
-			aria-label="list-component"
-			onAction={(key) => onItemClick(key.toString())}
-		>
-			{listItems.map((item) => {
+		<Listbox variant="faded" aria-label="list-component" selectionMode="single">
+			{menuList.map((menu) => {
 				return (
 					<ListboxItem
-						key={item.label}
-						startContent={ListStartContent({ type, listItem: item })}
+						key={menu.label}
+						onClick={() => handleMenuSelection(menu)}
+						startContent={ListStartContent({ menu })}
 					>
-						{item.label}
+						{menu.label}
 					</ListboxItem>
 				);
 			})}

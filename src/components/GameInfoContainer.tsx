@@ -9,7 +9,7 @@ import {
 	ScrollShadow,
 	Divider,
 	Button,
-	Chip,
+	// Chip,
 } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -24,7 +24,7 @@ interface Props {
 	error: boolean;
 }
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 function GameDetailsCard({
 	gameDetails,
@@ -32,8 +32,8 @@ function GameDetailsCard({
 	const [showMoreInfo, setShowMoreInfo] = useState(false);
 
 	const onSelectionChange = () => setShowMoreInfo(!showMoreInfo);
+
 	const {
-		tags,
 		website,
 		released,
 		metacritic,
@@ -43,15 +43,20 @@ function GameDetailsCard({
 		parent_platforms,
 	} = gameDetails;
 
+	const releaseDate = useMemo(() => {
+		if (!released) return null;
+		return new Date(released).toLocaleDateString();
+	}, [released]);
+
 	return (
 		<Card className="min-h-full">
-			<CardHeader className="flex justify-between">
+			<CardHeader className="flex justify-between px-6 my-2">
 				<Link to="/">
 					<Button isIconOnly variant="shadow" color="primary" size="sm">
 						<FaArrowLeft />
 					</Button>
 				</Link>
-				<header className="text-2xl md:text-4xl lg:text-6xl uppercase flex items-center gap-2">
+				<header className="text-2xl md:text-4xl lg:text-5xl uppercase flex items-center gap-2">
 					<Link to={website}>{name_original}</Link>
 
 					{metacritic !== null && <CriticScore score={metacritic} />}
@@ -62,13 +67,13 @@ function GameDetailsCard({
 					<ImageCarousel />
 				</div>
 
-				<Card className="lg:col-span-4 max-h-[400px]" isFooterBlurred isBlurred>
+				<Card className="lg:col-span-4 " isFooterBlurred isBlurred>
 					<CardHeader>
 						<header className="text-4xl">About</header>
 					</CardHeader>
 					<Divider></Divider>
 					<CardBody>
-						<ScrollShadow hideScrollBar className=" scroll-smooth">
+						<ScrollShadow hideScrollBar className="scroll-smooth">
 							<p className="pr-2">{description_raw}</p>
 						</ScrollShadow>
 					</CardBody>
@@ -80,7 +85,7 @@ function GameDetailsCard({
 								aria-label={showMoreInfo ? "Close" : "Show More"}
 							>
 								<div className="font-semibold space-y-1">
-									<p>{released && new Date(released).toLocaleDateString()}</p>
+									<p>{releaseDate}</p>
 									<p>{developers.map(({ name }) => name).join(", ")}</p>
 								</div>
 								<div className="flex gap-2 py-2">
@@ -88,7 +93,7 @@ function GameDetailsCard({
 										platformNames={parent_platforms.map((p) => p.platform.slug)}
 									/>
 								</div>
-								<div className="flex flex-wrap gap-2">
+								{/* <div className="flex flex-wrap gap-2">
 									{tags.map(({ name, id }) => {
 										return (
 											<Chip size="sm" key={id} color="primary" variant="shadow">
@@ -96,7 +101,7 @@ function GameDetailsCard({
 											</Chip>
 										);
 									})}
-								</div>
+								</div> */}
 							</AccordionItem>
 						</Accordion>
 					</CardFooter>

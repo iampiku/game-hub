@@ -109,11 +109,23 @@ export type Store = {
 	store: Genre;
 };
 
-export type ListItem = {
+export type GenreMenu = {
+	id: number;
 	label: string;
-	imageUrl?: string;
-	icon?: JSX.Element;
+	type: "genre";
+	imageUrl: string;
+	_selected: boolean;
 };
+
+export type Menu = {
+	label: string;
+	type: "menu";
+	menuType: "newRelease" | "topGames" | "platforms";
+	icon: JSX.Element;
+	_selected: boolean;
+};
+
+export type MenuList = GenreMenu | Menu;
 
 export type GameDetails = {
 	id: number;
