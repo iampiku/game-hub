@@ -198,22 +198,48 @@ export default function SideNavigation() {
 	function handleMenuClick(selectedMenu: MenuList) {
 		const updatedMenus = menus.map((menu) => {
 			if (selectedMenu.type === "genre" && menu.type === "genre")
-				return { ...menu, _selected: menu.id === selectedMenu.id };
-			if (
+				return {
+					...menu,
+					_selected: menu.id === selectedMenu.id && selectedMenu._selected,
+				};
+			else if (
 				selectedMenu.type === "menu" &&
 				menu.type === "menu" &&
 				menu.menuType === selectedMenu.menuType
 			)
-				return { ...menu, _selected: menu.label === selectedMenu.label };
-			return { ...menu };
+				return {
+					...menu,
+					_selected:
+						menu.label === selectedMenu.label && selectedMenu._selected,
+				};
+			else return { ...menu };
 		});
 
 		setMenus(updatedMenus);
-		setFilterParams(updatedMenus);
+		buildFilterParams(updatedMenus);
 	}
 
-	function setFilterParams(updatedMenus: MenuList[]) {
-		console.log(updatedMenus);
+	function buildFilterParams(updatedMenus: MenuList[]) {
+		const selectedMenuItems = updatedMenus.filter(({ _selected }) => _selected);
+		const filterParams: { [key: string]: string | number } = {};
+
+		for (const menu of selectedMenuItems) {
+			if (menu.type === "genre") filterParams["genres"] = menu.id;
+			else {
+				switch (menu.menuType) {
+					case "newRelease":
+						filterParams["newRelease"] = menu.label;
+						continue;
+					case "platforms":
+						filterParams["platforms"] = menu.label;
+						continue;
+					case "topGames":
+						filterParams["topGames"] = menu.label;
+				}
+			}
+		}
+
+		console.log(filterParams);
 	}
 
 	return (

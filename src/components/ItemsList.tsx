@@ -36,7 +36,7 @@ function ListStartContent({ menu }: Readonly<ListContentProps>) {
 
 export default function ItemsList({ menuList, onAction }: Readonly<Props>) {
 	function handleMenuSelection(menu: MenuList) {
-		onAction({ ...menu, _selected: true });
+		onAction({ ...menu, _selected: !menu._selected });
 	}
 
 	return (
