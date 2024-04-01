@@ -197,39 +197,23 @@ export default function SideNavigation() {
 
 	function handleMenuClick(selectedMenu: MenuList) {
 		const updatedMenus = menus.map((menu) => {
-			if (menu.type === "genre" && selectedMenu.type === "genre") {
-				if (menu.id === selectedMenu.id) return { ...selectedMenu };
-				else return { ...menu, _selected: false };
-			} else if (menu.type === "menu" && selectedMenu.type === "menu") {
-				if (
-					menu.menuType === "newRelease" &&
-					selectedMenu.menuType === "newRelease"
-				) {
-					if (menu.label === selectedMenu.label) return { ...selectedMenu };
-					else return { ...menu, _selected: false };
-				} else if (
-					menu.menuType === "platforms" &&
-					selectedMenu.menuType === "platforms"
-				) {
-					if (menu.label === selectedMenu.label) return { ...selectedMenu };
-					else return { ...menu, _selected: false };
-				} else if (
-					menu.menuType === "topGames" &&
-					selectedMenu.menuType === "topGames"
-				) {
-					if (menu.label === selectedMenu.label) return { ...selectedMenu };
-					else return { ...menu, _selected: false };
-				} else return { ...menu };
-			} else return { ...menu };
+			if (selectedMenu.type === "genre" && menu.type === "genre")
+				return { ...menu, _selected: menu.id === selectedMenu.id };
+			if (
+				selectedMenu.type === "menu" &&
+				menu.type === "menu" &&
+				menu.menuType === selectedMenu.menuType
+			)
+				return { ...menu, _selected: menu.label === selectedMenu.label };
+			return { ...menu };
 		});
 
 		setMenus(updatedMenus);
-		setFilterParams();
+		setFilterParams(updatedMenus);
 	}
 
-	function setFilterParams() {
-		const selectedMenuItems = menus.filter((menu) => menu._selected);
-		console.log(selectedMenuItems);
+	function setFilterParams(updatedMenus: MenuList[]) {
+		console.log(updatedMenus);
 	}
 
 	return (
