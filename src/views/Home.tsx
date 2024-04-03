@@ -53,11 +53,11 @@ export default function Home() {
 			<footer className="flex justify-center pt-4">
 				<Pagination
 					isCompact
+					page={page}
 					showControls
 					initialPage={1}
-					page={page}
-					onChange={handlePagination}
 					total={data?.count ?? 0}
+					onChange={handlePagination}
 				></Pagination>
 			</footer>
 		</DefaultLayout>
