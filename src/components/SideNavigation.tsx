@@ -19,23 +19,27 @@ import {
 import { SiNintendo } from "react-icons/si";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
-import useFetch from "@/hooks/useFetch";
 import useQueryParams from "@/hooks/useQueryParams";
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 
-import type { MenuList, GenreMenu, Genre } from "@/types";
+import type { MenuList } from "@/types";
+
+import { parentPlatforms, genres } from "@/utils";
 
 type AccordionItems = {
 	title: string;
 	items: MenuList[];
 };
 
-type GenreResponse = {
-	count: number;
-	results: Array<Genre>;
-};
-
 export default function SideNavigation() {
+	const modifiedGenres = genres.map(({ id, name, image_background }) => ({
+		id,
+		label: name,
+		type: "genre",
+		imageUrl: image_background,
+		_selected: false,
+	})) as MenuList[];
+
 	const [menus, setMenus] = useState<MenuList[]>([
 		{
 			_selected: false,
@@ -149,28 +153,12 @@ export default function SideNavigation() {
 			menuType: "platforms",
 			icon: <FaMobile className={"text-base"} />,
 		},
+		...modifiedGenres,
 	]);
-	const setSearchParams = useQueryParams<{
+
+	const [searchParams, setSearchParams] = useQueryParams<{
 		[key: string]: string | number;
-	}>("filter")[1];
-
-	const { data } = useFetch<GenreResponse>("/genres");
-	const { data: parentPlatforms } = useFetch("/platforms/list/parents");
-
-	useEffect(() => {
-		if (data) {
-			const genres: GenreMenu[] = data.results.map(
-				({ id, name, image_background }) => ({
-					id,
-					label: name,
-					type: "genre",
-					imageUrl: image_background,
-					_selected: false,
-				})
-			);
-			setMenus((previousMenus) => [...previousMenus, ...genres]);
-		}
-	}, [data]);
+	}>("filter");
 
 	const accordionItemList: AccordionItems[] = useMemo(() => {
 		return [
@@ -236,7 +224,9 @@ export default function SideNavigation() {
 						filterParams["newRelease"] = menu.label;
 						continue;
 					case "platforms":
-						filterParams["parent_platform"] = menu.label;
+						filterParams["parent_platforms"] =
+							parentPlatforms.find((platform) => platform.name === menu.label)
+								?.id ?? -1;
 						continue;
 					case "topGames":
 						filterParams["topGames"] = menu.label;
