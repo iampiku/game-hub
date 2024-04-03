@@ -17,10 +17,10 @@ import {
 	FaMobile,
 } from "react-icons/fa";
 import { SiNintendo } from "react-icons/si";
-
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
 import useFetch from "@/hooks/useFetch";
+import useQueryParams from "@/hooks/useQueryParams";
 import { useEffect, useState, useMemo } from "react";
 
 import type { MenuList, GenreMenu, Genre } from "@/types";
@@ -150,8 +150,12 @@ export default function SideNavigation() {
 			icon: <FaMobile className={"text-base"} />,
 		},
 	]);
+	const setSearchParams = useQueryParams<{
+		[key: string]: string | number;
+	}>("filter")[1];
 
 	const { data } = useFetch<GenreResponse>("/genres");
+	const { data: parentPlatforms } = useFetch("/platforms/list/parents");
 
 	useEffect(() => {
 		if (data) {
@@ -221,8 +225,9 @@ export default function SideNavigation() {
 
 	function buildFilterParams(updatedMenus: MenuList[]) {
 		const selectedMenuItems = updatedMenus.filter(({ _selected }) => _selected);
-		const filterParams: { [key: string]: string | number } = {};
+		if (!selectedMenuItems.length) return;
 
+		const filterParams: { [key: string]: string | number } = {};
 		for (const menu of selectedMenuItems) {
 			if (menu.type === "genre") filterParams["genres"] = menu.id;
 			else {
@@ -231,15 +236,15 @@ export default function SideNavigation() {
 						filterParams["newRelease"] = menu.label;
 						continue;
 					case "platforms":
-						filterParams["platforms"] = menu.label;
+						filterParams["parent_platform"] = menu.label;
 						continue;
 					case "topGames":
 						filterParams["topGames"] = menu.label;
+						continue;
 				}
 			}
 		}
-
-		console.log(filterParams);
+		setSearchParams(filterParams, { replace: true });
 	}
 
 	return (
