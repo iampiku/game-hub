@@ -2,6 +2,7 @@
 import { Listbox, ListboxItem, Chip, Avatar } from "@nextui-org/react";
 
 import type { MenuList } from "@/types";
+import { useMemo } from "react";
 
 interface Props {
 	menuList: MenuList[];
@@ -39,8 +40,18 @@ export default function ItemsList({ menuList, onAction }: Readonly<Props>) {
 		onAction({ ...menu, _selected: !menu._selected });
 	}
 
+	const selectedItemKey = useMemo(() => {
+		const selectedMenuItem = menuList.find((menu) => menu._selected);
+		return selectedMenuItem ? [selectedMenuItem.label] : [];
+	}, [menuList]);
+
 	return (
-		<Listbox variant="faded" aria-label="list-component" selectionMode="single">
+		<Listbox
+			variant="faded"
+			aria-label="list-component"
+			selectionMode="single"
+			selectedKeys={selectedItemKey}
+		>
 			{menuList.map((menu) => {
 				return (
 					<ListboxItem

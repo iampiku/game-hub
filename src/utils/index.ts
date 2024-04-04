@@ -1,4 +1,6 @@
-export const parentPlatforms = [
+import { MenuList } from "@/types";
+
+const RAW_PARENT_PLATFORMS = [
 	{
 		id: 1,
 		name: "PC",
@@ -658,9 +660,9 @@ export const parentPlatforms = [
 			},
 		],
 	},
-];
+] as const;
 
-export const genres = [
+const RAW_GENRES = [
 	{
 		id: 4,
 		name: "Action",
@@ -1535,4 +1537,27 @@ export const genres = [
 			},
 		],
 	},
-];
+] as const;
+
+const iconMapForMenu: { [key: string]: string } = {
+	Windows: '<FaWindows className={"text-base"} />',
+	"Play Station": '<FaPlaystation className={"text-base"} />',
+};
+
+export const parentPlatforms = RAW_PARENT_PLATFORMS.map((platform) => {
+	return {
+		_selected: false,
+		label: platform.name === "PC" ? "Windows" : platform.name,
+		type: "menu",
+		menuType: "platforms",
+		icon: iconMapForMenu[platform.name],
+	};
+});
+
+export const genres = RAW_GENRES.map(({ id, name, image_background }) => ({
+	id,
+	label: name,
+	type: "genre",
+	imageUrl: image_background,
+	_selected: false,
+})) as MenuList[];

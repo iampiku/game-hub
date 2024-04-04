@@ -20,7 +20,7 @@ import { SiNintendo } from "react-icons/si";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
 import useQueryParams from "@/hooks/useQueryParams";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 import type { MenuList } from "@/types";
 
@@ -187,6 +187,18 @@ export default function SideNavigation() {
 		];
 	}, [menus]);
 
+	useEffect(() => {
+		if (!searchParams) return;
+		const { genres, newRelease, topGames } = searchParams;
+
+		setMenus((previousMenus) => {
+			const updatedMenus = previousMenus.map((menu) => {
+				if (menu.type === "genre") {
+				}
+			});
+		});
+	}, [searchParams]);
+
 	function handleMenuClick(selectedMenu: MenuList) {
 		const updatedMenus = menus.map((menu) => {
 			if (selectedMenu.type === "genre" && menu.type === "genre")
@@ -240,6 +252,7 @@ export default function SideNavigation() {
 	return (
 		<Accordion
 			isCompact
+			keepContentMounted
 			variant="splitted"
 			selectionMode="multiple"
 			defaultExpandedKeys={["New Releases"]}
