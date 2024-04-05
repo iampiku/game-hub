@@ -23,8 +23,8 @@ export default function useFetch<T>(endPoint: string) {
 			.catch((error: AxiosError) => {
 				if (error instanceof CanceledError) return;
 
-				setErrorMessage(error.message);
 				setData(null);
+				setErrorMessage(error.message);
 			})
 			.finally(() => setLoading(false));
 

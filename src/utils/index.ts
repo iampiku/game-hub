@@ -1547,6 +1547,7 @@ const iconMapForMenu: { [key: string]: string } = {
 export const parentPlatforms = RAW_PARENT_PLATFORMS.map((platform) => {
 	return {
 		_selected: false,
+		id: platform.id,
 		label: platform.name === "PC" ? "Windows" : platform.name,
 		type: "menu",
 		menuType: "platforms",
@@ -1561,3 +1562,30 @@ export const genres = RAW_GENRES.map(({ id, name, image_background }) => ({
 	imageUrl: image_background,
 	_selected: false,
 })) as MenuList[];
+
+export function buildFilterParams(
+	selectedMenuItems: MenuList[]
+): { [key: string]: string | number } | null {
+	if (!selectedMenuItems.length) return null;
+
+	const filterParams: { [key: string]: string | number } = {};
+	for (const menu of selectedMenuItems) {
+		if (menu.type === "genre") filterParams["genres"] = menu.id;
+		else {
+			switch (menu.menuType) {
+				case "newRelease":
+					filterParams["newRelease"] = menu.label;
+					continue;
+				case "platforms":
+					filterParams["parent_platforms"] =
+						parentPlatforms.find((platform) => platform.label === menu.label)
+							?.id ?? -1;
+					continue;
+				case "topGames":
+					filterParams["topGames"] = menu.label;
+					continue;
+			}
+		}
+	}
+	return filterParams;
+}
