@@ -68,6 +68,12 @@ export async function platformService<T>(signal: AbortSignal) {
 	return _makeRequest<T>(signal, BASE_API_URLS.PLATFORMS);
 }
 
+export async function developerService<T>(signal: AbortSignal) {
+	return _makeRequest<T>(signal, BASE_API_URLS.DEVELOPERS);
+}
+
+console.log(developerService);
+
 export async function screenshotService<T>(
 	signal: AbortSignal,
 	params: Params
@@ -75,7 +81,5 @@ export async function screenshotService<T>(
 	if ("game_pk" in params) {
 		const apiUrl = `${BASE_API_URLS.BASE_URL}/${params.game_pk}/screenshots`;
 		return _makeRequest<T>(signal, apiUrl);
-	} else {
-		throw new Error("For game screenshots id is required");
-	}
+	} else throw new Error("For game screenshots id is required");
 }

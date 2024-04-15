@@ -154,24 +154,24 @@ const RAW_PARENT_PLATFORMS = [
 			},
 		],
 	},
-	{
-		id: 4,
-		name: "iOS",
-		slug: "ios",
-		platforms: [
-			{
-				id: 3,
-				name: "iOS",
-				slug: "ios",
-				games_count: 77242,
-				image_background:
-					"https://media.rawg.io/media/games/5fa/5fae5fec3c943179e09da67a4427d68f.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
+	// {
+	// 	id: 4,
+	// 	name: "iOS",
+	// 	slug: "ios",
+	// 	platforms: [
+	// 		{
+	// 			id: 3,
+	// 			name: "iOS",
+	// 			slug: "ios",
+	// 			games_count: 77242,
+	// 			image_background:
+	// 				"https://media.rawg.io/media/games/5fa/5fae5fec3c943179e09da67a4427d68f.jpg",
+	// 			image: null,
+	// 			year_start: null,
+	// 			year_end: null,
+	// 		},
+	// 	],
+	// },
 	{
 		id: 8,
 		name: "Android",
@@ -190,46 +190,46 @@ const RAW_PARENT_PLATFORMS = [
 			},
 		],
 	},
-	{
-		id: 5,
-		name: "Apple Macintosh",
-		slug: "mac",
-		platforms: [
-			{
-				id: 5,
-				name: "macOS",
-				slug: "macos",
-				games_count: 103698,
-				image_background:
-					"https://media.rawg.io/media/games/6fc/6fcf4cd3b17c288821388e6085bb0fc9.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 55,
-				name: "Classic Macintosh",
-				slug: "macintosh",
-				games_count: 674,
-				image_background:
-					"https://media.rawg.io/media/games/14a/14a83c56ff668baaced6e8c8704b6391.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 41,
-				name: "Apple II",
-				slug: "apple-ii",
-				games_count: 424,
-				image_background:
-					"https://media.rawg.io/media/screenshots/ed5/ed5d628f77ca3d2c16f041fe1267f224.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
+	// {
+	// 	id: 5,
+	// 	name: "Apple Macintosh",
+	// 	slug: "mac",
+	// 	platforms: [
+	// 		{
+	// 			id: 5,
+	// 			name: "macOS",
+	// 			slug: "macos",
+	// 			games_count: 103698,
+	// 			image_background:
+	// 				"https://media.rawg.io/media/games/6fc/6fcf4cd3b17c288821388e6085bb0fc9.jpg",
+	// 			image: null,
+	// 			year_start: null,
+	// 			year_end: null,
+	// 		},
+	// 		{
+	// 			id: 55,
+	// 			name: "Classic Macintosh",
+	// 			slug: "macintosh",
+	// 			games_count: 674,
+	// 			image_background:
+	// 				"https://media.rawg.io/media/games/14a/14a83c56ff668baaced6e8c8704b6391.jpg",
+	// 			image: null,
+	// 			year_start: null,
+	// 			year_end: null,
+	// 		},
+	// 		{
+	// 			id: 41,
+	// 			name: "Apple II",
+	// 			slug: "apple-ii",
+	// 			games_count: 424,
+	// 			image_background:
+	// 				"https://media.rawg.io/media/screenshots/ed5/ed5d628f77ca3d2c16f041fe1267f224.jpg",
+	// 			image: null,
+	// 			year_start: null,
+	// 			year_end: null,
+	// 		},
+	// 	],
+	// },
 	{
 		id: 6,
 		name: "Linux",
@@ -392,250 +392,6 @@ const RAW_PARENT_PLATFORMS = [
 				games_count: 984,
 				image_background:
 					"https://media.rawg.io/media/games/a9a/a9a2472f862b041d2980103ddbb61c91.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
-	{
-		id: 9,
-		name: "Atari",
-		slug: "atari",
-		platforms: [
-			{
-				id: 28,
-				name: "Atari 7800",
-				slug: "atari-7800",
-				games_count: 64,
-				image_background:
-					"https://media.rawg.io/media/screenshots/565/56504b28b184dbc630a7de118e39d822.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 31,
-				name: "Atari 5200",
-				slug: "atari-5200",
-				games_count: 64,
-				image_background:
-					"https://media.rawg.io/media/screenshots/678/6786598cba3939d48ed60cbd1a3723f4.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 23,
-				name: "Atari 2600",
-				slug: "atari-2600",
-				games_count: 286,
-				image_background:
-					"https://media.rawg.io/media/screenshots/b12/b12ed274eed80e4aced37badf228d1cf.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 22,
-				name: "Atari Flashback",
-				slug: "atari-flashback",
-				games_count: 30,
-				image_background:
-					"https://media.rawg.io/media/screenshots/2aa/2aa07f58491e14b0183333f8956bc802.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 25,
-				name: "Atari 8-bit",
-				slug: "atari-8-bit",
-				games_count: 308,
-				image_background:
-					"https://media.rawg.io/media/screenshots/038/0385a47d3a43b218204268af5361a19e.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 34,
-				name: "Atari ST",
-				slug: "atari-st",
-				games_count: 835,
-				image_background:
-					"https://media.rawg.io/media/games/32d/32d851318b042aba3df62e52d868d599.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 46,
-				name: "Atari Lynx",
-				slug: "atari-lynx",
-				games_count: 57,
-				image_background:
-					"https://media.rawg.io/media/screenshots/d71/d71b68d3f6b1810bc9d64d7aea746d30.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 50,
-				name: "Atari XEGS",
-				slug: "atari-xegs",
-				games_count: 22,
-				image_background:
-					"https://media.rawg.io/media/screenshots/769/7691726d70c23c029903df08858df001.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 112,
-				name: "Jaguar",
-				slug: "jaguar",
-				games_count: 39,
-				image_background:
-					"https://media.rawg.io/media/screenshots/241/24188738ed8141b03c767e6bbba28401.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
-	{
-		id: 10,
-		name: "Commodore / Amiga",
-		slug: "commodore-amiga",
-		platforms: [
-			{
-				id: 166,
-				name: "Commodore / Amiga",
-				slug: "commodore-amiga",
-				games_count: 2079,
-				image_background:
-					"https://media.rawg.io/media/games/637/637d7dc2f44d0f6ddd3ee2c0b1366962.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
-	{
-		id: 11,
-		name: "SEGA",
-		slug: "sega",
-		platforms: [
-			{
-				id: 167,
-				name: "Genesis",
-				slug: "genesis",
-				games_count: 835,
-				image_background:
-					"https://media.rawg.io/media/screenshots/9fb/9fb2f64404aeb409632ab479f2f51443.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 107,
-				name: "SEGA Saturn",
-				slug: "sega-saturn",
-				games_count: 367,
-				image_background:
-					"https://media.rawg.io/media/screenshots/fe0/fe0ccce931cdb5aaff9500a331e5c2eb.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 119,
-				name: "SEGA CD",
-				slug: "sega-cd",
-				games_count: 160,
-				image_background:
-					"https://media.rawg.io/media/screenshots/b3e/b3e41d90f811a8a153fc30bdd6cefc92.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 117,
-				name: "SEGA 32X",
-				slug: "sega-32x",
-				games_count: 46,
-				image_background:
-					"https://media.rawg.io/media/screenshots/d9f/d9f308b5d824ae8f047edc0a998a587b.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 74,
-				name: "SEGA Master System",
-				slug: "sega-master-system",
-				games_count: 229,
-				image_background:
-					"https://media.rawg.io/media/games/32d/32d851318b042aba3df62e52d868d599.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 106,
-				name: "Dreamcast",
-				slug: "dreamcast",
-				games_count: 362,
-				image_background:
-					"https://media.rawg.io/media/games/5b4/5b4af50ce68cf94dcab24f3dba33eaab.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-			{
-				id: 77,
-				name: "Game Gear",
-				slug: "game-gear",
-				games_count: 222,
-				image_background:
-					"https://media.rawg.io/media/games/079/0795d52725058c8d9d360a4b233f1e4f.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
-	{
-		id: 12,
-		name: "3DO",
-		slug: "3do",
-		platforms: [
-			{
-				id: 111,
-				name: "3DO",
-				slug: "3do",
-				games_count: 97,
-				image_background:
-					"https://media.rawg.io/media/screenshots/d8c/d8c399c09701ae2603043a3bb3a0bff5.jpg",
-				image: null,
-				year_start: null,
-				year_end: null,
-			},
-		],
-	},
-	{
-		id: 13,
-		name: "Neo Geo",
-		slug: "neo-geo",
-		platforms: [
-			{
-				id: 12,
-				name: "Neo Geo",
-				slug: "neogeo",
-				games_count: 123,
-				image_background:
-					"https://media.rawg.io/media/screenshots/633/6334882482c86e4a37254dcae9a82e89.jpg",
 				image: null,
 				year_start: null,
 				year_end: null,
@@ -1539,11 +1295,6 @@ const RAW_GENRES = [
 	},
 ] as const;
 
-const iconMapForMenu: { [key: string]: string } = {
-	Windows: '<FaWindows className={"text-base"} />',
-	"Play Station": '<FaPlaystation className={"text-base"} />',
-};
-
 export const parentPlatforms = RAW_PARENT_PLATFORMS.map((platform) => {
 	return {
 		_selected: false,
@@ -1551,7 +1302,6 @@ export const parentPlatforms = RAW_PARENT_PLATFORMS.map((platform) => {
 		label: platform.name === "PC" ? "Windows" : platform.name,
 		type: "menu",
 		menuType: "platforms",
-		icon: iconMapForMenu[platform.name],
 	};
 });
 
@@ -1578,8 +1328,7 @@ export function buildFilterParams(
 					continue;
 				case "platforms":
 					filterParams["parent_platforms"] =
-						parentPlatforms.find((platform) => platform.label === menu.label)
-							?.id ?? -1;
+						"id" in menu ? (menu.id as number) : -1;
 					continue;
 				case "topGames":
 					filterParams["topGames"] = menu.label;

@@ -19,11 +19,12 @@ import {
 import { SiNintendo } from "react-icons/si";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback, ReactNode } from "react";
+import useQueryParams from "@/hooks/useQueryParams";
 
 import type { MenuList } from "@/types";
 
-import { parentPlatforms, genres } from "@/utils";
+import { parentPlatforms, genres, buildFilterParams } from "@/utils";
 
 type AccordionItems = {
 	title: string;
@@ -31,14 +32,27 @@ type AccordionItems = {
 };
 
 export default function SideNavigation() {
-	const modifiedGenres = genres.map(({ id, name, image_background }) => ({
-		id,
-		label: name,
-		type: "genre",
-		imageUrl: image_background,
-		_selected: false,
-	})) as MenuList[];
+	const PLATFORM_ICON_MAP: { [key: string]: ReactNode } = {
+		phone: <FaMobile className={"text-base"} />,
+		web: <FaGlobe className={"text-base"} />,
+		android: <FaAndroid className={"text-base"} />,
+		linux: <FaLinux className={"text-base"} />,
+		playstation: <FaPlaystation className={"text-base"} />,
+		xbox: <FaXbox className={"text-base"} />,
+		windows: <FaWindows className={"text-base"} />,
+		nintendo: <SiNintendo className={"text-base"} />,
+	} as const;
 
+	const platforms = parentPlatforms.map((platform) => {
+		return {
+			...platform,
+			icon: PLATFORM_ICON_MAP[platform.label.toLowerCase()],
+		};
+	}) as MenuList[];
+
+	const [gameFilters, setGameFilters] = useQueryParams<{
+		[key: string]: string | number;
+	}>("filter");
 	const [menus, setMenus] = useState<MenuList[]>([
 		{
 			_selected: false,
@@ -89,71 +103,39 @@ export default function SideNavigation() {
 			menuType: "topGames",
 			icon: <FaCrown className={"text-base"} />,
 		},
-		{
-			_selected: false,
-			label: "Windows",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaWindows className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Play Station",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaPlaystation className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Xbox",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaXbox className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Nintendo",
-			type: "menu",
-			menuType: "platforms",
-			icon: <SiNintendo className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Linux",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaLinux className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Android",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaAndroid className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Apple",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaApple className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Web",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaGlobe className={"text-base"} />,
-		},
-		{
-			_selected: false,
-			label: "Phone",
-			type: "menu",
-			menuType: "platforms",
-			icon: <FaMobile className={"text-base"} />,
-		},
-		...modifiedGenres,
+		...platforms,
+		...genres,
 	]);
+
+	const updateMenuFromFilterParams = useCallback(() => {
+		if (!gameFilters) return;
+
+		const { genres, parent_platforms, newRelease, topGames } = gameFilters;
+		setMenus((previousMenuItems) => {
+			return previousMenuItems.map((menu) => {
+				const isSelected = Boolean(
+					(genres && menu.type === "genre" && menu.id === genres) ||
+						(parent_platforms &&
+							menu.type === "menu" &&
+							menu.menuType === "platforms" &&
+							("id" in menu ? (menu.id as number) : -1) === parent_platforms) ||
+						(newRelease &&
+							menu.type === "menu" &&
+							menu.menuType === "newRelease" &&
+							menu.label === newRelease) ||
+						(topGames &&
+							menu.type === "menu" &&
+							menu.menuType === "topGames" &&
+							menu.label === topGames)
+				);
+				return { ...menu, _selected: isSelected };
+			});
+		});
+	}, [gameFilters]);
+
+	useEffect(() => {
+		updateMenuFromFilterParams();
+	}, [updateMenuFromFilterParams]);
 
 	const accordionItemList: AccordionItems[] = useMemo(() => {
 		return [
@@ -203,33 +185,14 @@ export default function SideNavigation() {
 		});
 
 		setMenus(updatedMenus);
-		buildFilterParams(updatedMenus);
+		const selectedMenuItems = updatedMenus.filter((menu) => menu._selected);
+		updateFilterParams(selectedMenuItems);
 	}
 
-	function buildFilterParams(updatedMenus: MenuList[]) {
-		const selectedMenuItems = updatedMenus.filter(({ _selected }) => _selected);
-		if (!selectedMenuItems.length) return;
-
-		const filterParams: { [key: string]: string | number } = {};
-		for (const menu of selectedMenuItems) {
-			if (menu.type === "genre") filterParams["genres"] = menu.id;
-			else {
-				switch (menu.menuType) {
-					case "newRelease":
-						filterParams["newRelease"] = menu.label;
-						continue;
-					case "platforms":
-						filterParams["parent_platforms"] =
-							parentPlatforms.find((platform) => platform.name === menu.label)
-								?.id ?? -1;
-						continue;
-					case "topGames":
-						filterParams["topGames"] = menu.label;
-						continue;
-				}
-			}
-		}
-		setSearchParams(filterParams, { replace: true });
+	function updateFilterParams(selectedMenus: MenuList[]) {
+		const filterParams = buildFilterParams(selectedMenus);
+		if (filterParams) setGameFilters(filterParams);
+		else setGameFilters({});
 	}
 
 	return (

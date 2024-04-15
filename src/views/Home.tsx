@@ -4,7 +4,7 @@ import GameGrid from "@/components/GameGrid";
 import { Pagination } from "@nextui-org/react";
 
 import { Games } from "@/types";
-import { gameService } from "@/service";
+import { gameService, developerService } from "@/service";
 
 import useQueryParams from "@/hooks/useQueryParams";
 import { useQuery } from "@tanstack/react-query";
@@ -37,6 +37,13 @@ export default function Home() {
 		queryFn: ({ signal }) =>
 			gameService<{ results: Games[]; count: number }>(signal, apiParams),
 	});
+
+	// const { data: developers } = useQuery({
+	// 	queryKey: ["developer"],
+	// 	queryFn: ({ signal }) => developerService(signal),
+	// });
+
+	// console.log(developers);
 
 	const handlePagination = (page: number) => setPage(page);
 
