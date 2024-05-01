@@ -1338,3 +1338,11 @@ export function buildFilterParams(
 	}
 	return filterParams;
 }
+
+export function formatNumberToShot(value: number) {
+	const numberFormatter = new Intl.NumberFormat("en-US", {
+		notation: "compact",
+		compactDisplay: "short",
+	});
+	return numberFormatter.format(value);
+}

@@ -4,7 +4,7 @@ import GameGrid from "@/components/GameGrid";
 import { Pagination } from "@nextui-org/react";
 
 import { Games } from "@/types";
-import { gameService, developerService } from "@/service";
+import { gameService } from "@/service";
 
 import useQueryParams from "@/hooks/useQueryParams";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ export default function Home() {
 		let params: { [key: string]: string | number } = {};
 
 		params["page"] = page;
-		params["page_size"] = 15;
+		params["page_size"] = 16;
 		if (searchQuery) params["search"] = searchQuery;
 		if (filterParams) params = { ...params, ...filterParams };
 
@@ -59,9 +59,7 @@ export default function Home() {
 
 			<footer className="flex justify-center pt-4">
 				<Pagination
-					isCompact
 					page={page}
-					showControls
 					initialPage={1}
 					total={data?.count ?? 0}
 					onChange={handlePagination}

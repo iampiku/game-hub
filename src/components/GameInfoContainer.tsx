@@ -7,9 +7,7 @@ import {
 	AccordionItem,
 	Spinner,
 	ScrollShadow,
-	Divider,
 	Button,
-	// Chip,
 } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -34,10 +32,12 @@ function GameDetailsCard({
 	const onSelectionChange = () => setShowMoreInfo(!showMoreInfo);
 
 	const {
+		genres,
 		website,
 		released,
 		metacritic,
 		developers,
+		publishers,
 		name_original,
 		description_raw,
 		parent_platforms,
@@ -71,37 +71,43 @@ function GameDetailsCard({
 					<CardHeader>
 						<header className="text-4xl">About</header>
 					</CardHeader>
-					<Divider></Divider>
+
 					<CardBody>
-						<ScrollShadow hideScrollBar className="scroll-smooth">
+						<ScrollShadow hideScrollBar className="scroll-smooth max-h-[300px]">
 							<p className="pr-2">{description_raw}</p>
 						</ScrollShadow>
 					</CardBody>
-					<Divider></Divider>
+
 					<CardFooter>
 						<Accordion isCompact onSelectionChange={onSelectionChange}>
 							<AccordionItem
 								title={showMoreInfo ? "Close" : "Show More"}
 								aria-label={showMoreInfo ? "Close" : "Show More"}
 							>
-								<div className="font-semibold space-y-1">
-									<p>{releaseDate}</p>
-									<p>{developers.map(({ name }) => name).join(", ")}</p>
+								<div className="space-y-2">
+									<p>
+										<span className="font-semibold">Released: </span>
+										{releaseDate}
+									</p>
+									<p>
+										<span className="font-semibold">Developer: </span>
+										{developers.map(({ name }) => name).join(", ")}
+									</p>
+									<p>
+										<span className="font-semibold">Publishers: </span>
+										{publishers.map((publisher) => publisher.name).join(", ")}
+									</p>
+									<p>
+										<span className="font-semibold">Genres: </span>
+										{genres.map((genre) => genre.name).join(", ")}
+									</p>
 								</div>
 								<div className="flex gap-2 py-2">
+									<span className="font-semibold pt-[2px]">Platforms: </span>
 									<PlatformIcons
 										platformNames={parent_platforms.map((p) => p.platform.slug)}
 									/>
 								</div>
-								{/* <div className="flex flex-wrap gap-2">
-									{tags.map(({ name, id }) => {
-										return (
-											<Chip size="sm" key={id} color="primary" variant="shadow">
-												{name}
-											</Chip>
-										);
-									})}
-								</div> */}
 							</AccordionItem>
 						</Accordion>
 					</CardFooter>

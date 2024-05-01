@@ -9,7 +9,7 @@ interface Props {
 	loading: boolean;
 }
 
-const LOADER_CARD_COUNT = 8 as const;
+const LOADER_CARD_COUNT = 8;
 
 export default function GameGrid({ games, loading }: Readonly<Props>) {
 	const CardSkeletonLoader = (): Array<JSX.Element> => {
@@ -23,7 +23,7 @@ export default function GameGrid({ games, loading }: Readonly<Props>) {
 	};
 
 	return (
-		<div className="lg:columns-4 md:columns-3 sm:columns-2 columns-1 gap-3">
+		<div className="xl:columns-4 lg:columns-3 md:columns-2 columns-1 gap-3">
 			{loading && CardSkeletonLoader()}
 			{games.map((game) => {
 				return (

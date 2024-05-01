@@ -20,10 +20,11 @@ export default function DefaultLayout({ children }: Readonly<Props>) {
 					<section className="col-span-10">{children}</section>
 				</div>
 			</main>
-			<footer className="py-10 text-center text-xl">
+			<footer className="py-10 text-center text-base">
 				<p>
 					Build with ⚛️ by{" "}
-					<span className="font-bold">Pradipta Chatterjee</span> 👨🏽‍💻
+					<span className="font-bold">Pradipta Chatterjee</span> 👨🏽‍💻 and powered
+					by rawg API
 				</p>
 			</footer>
 		</div>

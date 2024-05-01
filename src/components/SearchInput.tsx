@@ -18,11 +18,11 @@ export default function SearchInput({ handleSearch }: Readonly<Props>) {
 
 	return (
 		<Input
-			size="sm"
+			size="md"
 			type="text"
 			isClearable
-			radius="lg"
-			variant="flat"
+			radius="md"
+			variant="faded"
 			value={search}
 			aria-label="Search"
 			onClear={onClearText}

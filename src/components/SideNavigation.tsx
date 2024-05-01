@@ -191,7 +191,7 @@ export default function SideNavigation() {
 
 	function updateFilterParams(selectedMenus: MenuList[]) {
 		const filterParams = buildFilterParams(selectedMenus);
-		if (filterParams) setGameFilters(filterParams);
+		if (filterParams) setGameFilters(filterParams, { replace: true });
 		else setGameFilters({});
 	}
 

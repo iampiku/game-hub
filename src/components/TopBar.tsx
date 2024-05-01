@@ -39,11 +39,9 @@ export default function TopBar() {
 		<Navbar isBlurred maxWidth="full" className="pb-2">
 			<NavbarContent>
 				<NavbarItem>
-					<p className="font-semibold text-xl">
-						Game <br /> Browser
-					</p>
+					<p className="font-semibold text-xl">⚛️ Game Browser</p>
 				</NavbarItem>
-				<NavbarItem className="w-full">
+				<NavbarItem className="">
 					<SearchInput handleSearch={updateSearchParams} />
 				</NavbarItem>
 				<NavbarItem>

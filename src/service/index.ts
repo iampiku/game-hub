@@ -72,8 +72,6 @@ export async function developerService<T>(signal: AbortSignal) {
 	return _makeRequest<T>(signal, BASE_API_URLS.DEVELOPERS);
 }
 
-console.log(developerService);
-
 export async function screenshotService<T>(
 	signal: AbortSignal,
 	params: Params
