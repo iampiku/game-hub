@@ -49,7 +49,7 @@ function GameDetailsCard({
 	}, [released]);
 
 	return (
-		<Card className="min-h-full">
+		<Card className="h-full">
 			<CardHeader className="flex justify-between px-6 my-2">
 				<Link to="/">
 					<Button isIconOnly variant="shadow" color="primary" size="sm">

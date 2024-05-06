@@ -17,7 +17,6 @@ export default function Home() {
 	const [filterParams] = useQueryParams<{ [key: string]: string | number }>(
 		"filter"
 	);
-	const [games, setGames] = useState<Games[]>([]);
 
 	const searchQuery = searchParams.get("query");
 
@@ -45,19 +44,18 @@ export default function Home() {
 
 	// console.log(developers);
 
-	const handlePagination = (page: number) => setPage(page);
-
-	useEffect(() => {
-		setGames(data?.results ?? []);
-	}, [data?.results]);
+	const handlePagination = (currentPage: number) => {
+		if (currentPage === page) return;
+		else setPage(currentPage);
+	};
 
 	return (
 		<DefaultLayout>
 			{isError && <span>Oops! something went wrong</span>}
 
-			<GameGrid games={games} loading={isLoading} />
+			<GameGrid games={data?.results || []} loading={isLoading} />
 
-			<footer className="flex justify-center pt-4">
+			<footer className="flex justify-center pt-6">
 				<Pagination
 					page={page}
 					initialPage={1}

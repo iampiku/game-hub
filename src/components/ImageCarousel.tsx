@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 /**
  * Components
  */
-import { Image } from "@nextui-org/react";
+import { Image, Spinner } from "@nextui-org/react";
 
 /**
  * Hooks
@@ -31,7 +31,7 @@ export default function ImageCarousel() {
 		{ id: number; src: string; alt: string }[]
 	>([]);
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ["screenshots"],
 		queryFn: ({ signal }) =>
 			screenshotService<{ results: { id: number; image: string }[] }>(signal, {
@@ -85,8 +85,18 @@ export default function ImageCarousel() {
 
 	return (
 		<div className="embla">
-			<div className="embla__viewport" ref={emblaRef}>
-				<div className="embla__container">
+			<div
+				className="embla__viewport flex justify-center items-center"
+				ref={emblaRef}
+			>
+				<div className="embla__container ">
+					{isLoading && (
+						<Spinner
+							size="lg"
+							className="pt-[140px]"
+							label="Loading game screen-shots..."
+						></Spinner>
+					)}
 					{screenshots.map((imageItem, index) => (
 						<div className="embla__slide" key={imageItem.id}>
 							<div className="embla__parallax">
@@ -104,6 +114,7 @@ export default function ImageCarousel() {
 										content="cover"
 										src={imageItem.src}
 										alt={imageItem.alt}
+										isLoading={isLoading}
 										className="embla__slide__img cursor-grab active:cursor-grabbing"
 									/>
 								</div>
