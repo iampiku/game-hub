@@ -33,7 +33,7 @@ async function _makeRequest<T>(
 	signal: AbortSignal,
 	apiUrl: string,
 	params?: Params
-) {
+): Promise<T | null> {
 	const apiParams =
 		apiUrl === BASE_API_URLS.BASE_URL && params ? { ...params } : {};
 	try {
@@ -43,21 +43,24 @@ async function _makeRequest<T>(
 		});
 		return _requestSuccessHandler<T>(response);
 	} catch (error) {
-		return _requestErrorHandler(error);
+		_requestErrorHandler(error);
+		return null;
 	}
 }
 
-export async function gameDetailService<T>(
+export function gameService<T>(
 	signal: AbortSignal,
 	params: Params
-) {
+): Promise<T | null> {
+	let response = null;
 	if ("id" in params)
-		return _makeRequest<T>(signal, `${BASE_API_URLS.BASE_URL}/${params.id}`);
-	else throw new Error("For game details id is required");
-}
+		response = _makeRequest<T>(
+			signal,
+			`${BASE_API_URLS.BASE_URL}/${params.id}`
+		);
+	else response = _makeRequest<T>(signal, BASE_API_URLS.BASE_URL, params);
 
-export async function gameService<T>(signal: AbortSignal, params: Params) {
-	return _makeRequest<T>(signal, BASE_API_URLS.BASE_URL, params);
+	return response;
 }
 
 export async function genreService<T>(signal: AbortSignal) {

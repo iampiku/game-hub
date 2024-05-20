@@ -1,67 +1,57 @@
 import DefaultLayout from "@/layouts/Default";
 
+import { Button } from "@nextui-org/react";
+import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import GameGrid from "@/components/GameGrid";
-import { Pagination } from "@nextui-org/react";
+import ShowError from "@/components/ShowError";
 
-import { Games } from "@/types";
-import { gameService } from "@/service";
-
-import useQueryParams from "@/hooks/useQueryParams";
-import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import useGame from "@/hooks/useGames";
 
 export default function Home() {
-	const [page, setPage] = useState(1);
-	const [searchParams] = useSearchParams();
-	const [filterParams] = useQueryParams<{ [key: string]: string | number }>(
-		"filter"
-	);
+	const { isLoading, isError, gameData, setPage, page } = useGame(null);
 
-	const searchQuery = searchParams.get("query");
-
-	const apiParams = useMemo(() => {
-		let params: { [key: string]: string | number } = {};
-
-		params["page"] = page;
-		params["page_size"] = 16;
-		if (searchQuery) params["search"] = searchQuery;
-		if (filterParams) params = { ...params, ...filterParams };
-
-		return params;
-	}, [page, searchQuery, filterParams]);
-
-	const { data, isLoading, isError } = useQuery({
-		queryKey: ["games", apiParams],
-		queryFn: ({ signal }) =>
-			gameService<{ results: Games[]; count: number }>(signal, apiParams),
-	});
-
-	// const { data: developers } = useQuery({
-	// 	queryKey: ["developer"],
-	// 	queryFn: ({ signal }) => developerService(signal),
-	// });
-
-	// console.log(developers);
-
-	const handlePagination = (currentPage: number) => {
-		if (currentPage === page) return;
-		else setPage(currentPage);
-	};
+	function handlePagination(move: "next" | "prev") {
+		if (move === "next") {
+			setPage((prevPage) => ++prevPage);
+		} else {
+			setPage((prevPage) => {
+				if (prevPage === 1) return prevPage;
+				else return --prevPage;
+			});
+		}
+	}
 
 	return (
 		<DefaultLayout>
-			{isError && <span>Oops! something went wrong</span>}
+			{isError && (
+				<div className="min-h-screen my-auto">
+					<ShowError errorCode={404} />
+				</div>
+			)}
 
-			<GameGrid games={data?.results || []} loading={isLoading} />
+			<GameGrid games={gameData.games} loading={isLoading} />
 
-			<footer className="flex justify-center pt-6">
-				<Pagination
-					page={page}
-					initialPage={1}
-					total={data?.count ?? 0}
-					onChange={handlePagination}
-				></Pagination>
+			<footer className="flex justify-end gap-4 pt-6">
+				<Button
+					variant="shadow"
+					color="secondary"
+					isLoading={isLoading}
+					isDisabled={page === 1}
+					onClick={() => handlePagination("prev")}
+					startContent={<FaArrowAltCircleLeft />}
+				>
+					Previous
+				</Button>
+				<Button
+					variant="shadow"
+					color="secondary"
+					isLoading={isLoading}
+					isDisabled={gameData.totalGames === page}
+					onClick={() => handlePagination("next")}
+					endContent={<FaArrowAltCircleRight />}
+				>
+					Next
+				</Button>
 			</footer>
 		</DefaultLayout>
 	);

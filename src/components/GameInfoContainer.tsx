@@ -15,6 +15,8 @@ import CriticScore from "./CriticScore";
 import PlatformIcons from "./PlatformIcons";
 import ImageCarousel from "./ImageCarousel";
 
+import ShowError from "./ShowError";
+
 import { GameDetails } from "@/types";
 interface Props {
 	gameDetails: GameDetails | null;
@@ -49,7 +51,7 @@ function GameDetailsCard({
 	}, [released]);
 
 	return (
-		<Card className="h-full">
+		<Card className="" isBlurred>
 			<CardHeader className="flex justify-between px-6 my-2">
 				<Link to="/">
 					<Button isIconOnly variant="shadow" color="primary" size="sm">

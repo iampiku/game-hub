@@ -11,20 +11,16 @@ interface Props {
 
 const LOADER_CARD_COUNT = 8;
 
-export default function GameGrid({ games, loading }: Readonly<Props>) {
-	const CardSkeletonLoader = (): Array<JSX.Element> => {
-		let counter = 0;
-		const Cards: Array<JSX.Element> = [];
-		while (counter < LOADER_CARD_COUNT) {
-			Cards.push(<GameCardSkeleton key={counter} />);
-			counter++;
-		}
-		return Cards;
-	};
+function CardSkeletonLoader() {
+	return Array.from({ length: LOADER_CARD_COUNT }).map((_, index) => {
+		return <GameCardSkeleton key={index} />;
+	});
+}
 
+export default function GameGrid({ games, loading }: Readonly<Props>) {
 	return (
 		<div className="xl:columns-4 lg:columns-3 md:columns-2 columns-1 gap-3">
-			{loading && CardSkeletonLoader()}
+			{loading && <CardSkeletonLoader />}
 			{games.map((game) => {
 				return (
 					<Link to={`game/${game.id}`} key={game.id}>

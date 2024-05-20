@@ -1,4 +1,10 @@
-import { Navbar, NavbarContent, NavbarItem, Switch } from "@nextui-org/react";
+import {
+	Navbar,
+	NavbarContent,
+	NavbarItem,
+	NavbarBrand,
+	Switch,
+} from "@nextui-org/react";
 
 import { useCallback, useEffect, useState } from "react";
 
@@ -15,7 +21,7 @@ export default function TopBar() {
 	const [search, setSearch] = useSearchParams();
 
 	function updateSearchParams(query: string) {
-		if (query.length !== 0) setSearch({ query }, { replace: true });
+		if (query.length !== 0) setSearch({ query });
 		else search.delete("query");
 	}
 
@@ -36,12 +42,12 @@ export default function TopBar() {
 	}, [isDark, updateAppTheme]);
 
 	return (
-		<Navbar isBlurred maxWidth="full" className="pb-2">
+		<Navbar isBlurred maxWidth="full" className="mb-6 pt-2">
+			<NavbarBrand>
+				<p className="font-semibold text-xl">⚛️ Game Browser</p>
+			</NavbarBrand>
 			<NavbarContent>
 				<NavbarItem>
-					<p className="font-semibold text-xl">⚛️ Game Browser</p>
-				</NavbarItem>
-				<NavbarItem className="">
 					<SearchInput handleSearch={updateSearchParams} />
 				</NavbarItem>
 				<NavbarItem>
@@ -50,7 +56,6 @@ export default function TopBar() {
 						isSelected={isDark}
 						onValueChange={setIsDark}
 					></Switch>
-					<span>{isDark}</span>
 				</NavbarItem>
 			</NavbarContent>
 		</Navbar>

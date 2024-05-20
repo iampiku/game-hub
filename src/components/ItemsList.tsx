@@ -19,7 +19,7 @@ function ListStartContent({ menu }: Readonly<ListContentProps>) {
 			return (
 				<Avatar
 					size="sm"
-					radius="md"
+					radius="lg"
 					alt="genre_img"
 					src={menu.imageUrl}
 				></Avatar>
