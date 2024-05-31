@@ -8,9 +8,10 @@ import BadRequestErrorSVG from "@/assets/bad_request_error.gif";
 
 interface Props {
 	errorCode: 404 | 400 | 500;
+	customDescription?: string;
 }
 
-const ShowError = memo(({ errorCode }: Readonly<Props>) => {
+const ShowError = memo(({ errorCode, customDescription }: Readonly<Props>) => {
 	const errorMessage: {
 		[key: number]: { title: string; subtitle: string };
 	} = {
@@ -34,6 +35,8 @@ const ShowError = memo(({ errorCode }: Readonly<Props>) => {
 		500: ServerErrorSVG,
 	} as const;
 
+	const errorSubtitle = customDescription ?? errorMessage[errorCode].subtitle;
+
 	return (
 		<div className="flex flex-col justify-center items-center pb-6">
 			<Image
@@ -43,7 +46,7 @@ const ShowError = memo(({ errorCode }: Readonly<Props>) => {
 				className="mix-blend-multiply"
 			></Image>
 			<strong className="text-lg">{errorMessage[errorCode].title}</strong>
-			<p>{errorMessage[errorCode].subtitle}</p>
+			<p>{errorSubtitle}</p>
 		</div>
 	);
 });

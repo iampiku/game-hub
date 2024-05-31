@@ -5,15 +5,17 @@ type Params = {
 	id?: string;
 	page?: number;
 	genres?: string;
-	game_pk?: string;
+	game_pk: string | null;
 	search?: string;
 	page_size?: number;
 	platforms?: string;
 };
 
 enum BASE_API_URLS {
+	STORES = "/stores",
 	BASE_URL = "/games",
 	GENRES = "/genres",
+	PUBLISHER = "/publishers",
 	DEVELOPERS = "/developers",
 	PLATFORMS = "/platforms/lists/parents",
 }
@@ -52,15 +54,10 @@ export function gameService<T>(
 	signal: AbortSignal,
 	params: Params
 ): Promise<T | null> {
-	let response = null;
-	if ("id" in params)
-		response = _makeRequest<T>(
-			signal,
-			`${BASE_API_URLS.BASE_URL}/${params.id}`
-		);
-	else response = _makeRequest<T>(signal, BASE_API_URLS.BASE_URL, params);
-
-	return response;
+	const apiUrl = params.id
+		? `${BASE_API_URLS.BASE_URL}/${params.id}`
+		: BASE_API_URLS.BASE_URL;
+	return _makeRequest<T>(signal, apiUrl, params);
 }
 
 export async function genreService<T>(signal: AbortSignal) {
@@ -75,11 +72,19 @@ export async function developerService<T>(signal: AbortSignal) {
 	return _makeRequest<T>(signal, BASE_API_URLS.DEVELOPERS);
 }
 
+export async function storeService<T>(signal: AbortSignal) {
+	return _makeRequest<T>(signal, BASE_API_URLS.STORES);
+}
+
+export async function publisherService<T>(signal: AbortSignal) {
+	return _makeRequest<T>(signal, BASE_API_URLS.PUBLISHER);
+}
+
 export async function screenshotService<T>(
 	signal: AbortSignal,
 	params: Params
 ) {
-	if ("game_pk" in params) {
+	if (params.game_pk) {
 		const apiUrl = `${BASE_API_URLS.BASE_URL}/${params.game_pk}/screenshots`;
 		return _makeRequest<T>(signal, apiUrl);
 	} else throw new Error("For game screenshots id is required");

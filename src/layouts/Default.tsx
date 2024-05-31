@@ -1,5 +1,5 @@
-import TopBar from "@/components/TopBar";
-import SideNavigation from "@/components/SideNavigation";
+import TopBar from "@/components/layoutComponents/TopBar";
+import SideNavigation from "@/components/layoutComponents/SideNavigation";
 
 import { ReactNode } from "react";
 
@@ -27,7 +27,9 @@ export default function DefaultLayout({ children }: Readonly<Props>) {
 				<p>
 					Build with ⚛️ by{" "}
 					<span className="font-bold cursor-pointer">
-						<Link isExternal>Pradipta Chatterjee</Link>
+						<Link isExternal href="https://github.com/iampiku" showAnchorIcon>
+							Pradipta Chatterjee
+						</Link>
 					</span>{" "}
 					👨🏽‍💻 and powered by <strong>rawg</strong> API
 				</p>

@@ -5,16 +5,14 @@ import {
 	NavbarBrand,
 	Switch,
 } from "@nextui-org/react";
-
-import { useCallback, useEffect, useState } from "react";
-
-import { useSearchParams } from "react-router-dom";
+import SearchInput from "@/components/utilComponents/SearchInput";
 
 import useLocalStorage from "@/hooks/useLocalStorage";
-
-import SearchInput from "./SearchInput";
+import { useCallback, useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 export default function TopBar() {
+	const navigate = useNavigate();
 	const { setItem, getItem } = useLocalStorage<boolean>("isDark");
 
 	const [isDark, setIsDark] = useState(!!getItem());
@@ -43,8 +41,8 @@ export default function TopBar() {
 
 	return (
 		<Navbar isBlurred maxWidth="full" className="mb-6 pt-2">
-			<NavbarBrand>
-				<p className="font-semibold text-xl">⚛️ Game Browser</p>
+			<NavbarBrand onClick={() => navigate(-1)}>
+				<p className="font-semibold text-xl cursor-pointer">⚛️ Game Browser</p>
 			</NavbarBrand>
 			<NavbarContent>
 				<NavbarItem>

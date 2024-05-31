@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import { Listbox, ListboxItem, Chip, Avatar } from "@nextui-org/react";
 
 import type { MenuList } from "@/types";

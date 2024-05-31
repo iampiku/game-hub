@@ -1,37 +1,40 @@
+import { useState } from "react";
+
+import { GameDetails } from "@/types";
+
 import {
 	Card,
-	CardBody,
 	CardHeader,
+	Button,
+	CardBody,
+	ScrollShadow,
 	CardFooter,
 	Accordion,
 	AccordionItem,
-	Spinner,
-	ScrollShadow,
-	Button,
 } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import CriticScore from "./CriticScore";
-import PlatformIcons from "./PlatformIcons";
-import ImageCarousel from "./ImageCarousel";
+import Carousel from "@/components/carousel/Carousel";
+import CriticScore from "@/components/utilComponents/CriticScore";
+import PlatformIcons from "@/components/utilComponents/PlatformIcons";
+import ShowError from "./utilComponents/ShowError";
 
-import ShowError from "./ShowError";
-
-import { GameDetails } from "@/types";
-interface Props {
-	gameDetails: GameDetails | null;
-	loading: boolean;
-	error: boolean;
+interface GameInfoProps {
+	screenshotsLoading: boolean;
+	gameInfo: GameDetails | null;
+	gameScreenshots: { id: number; image: string }[];
 }
 
-import { useMemo, useState } from "react";
-
-function GameDetailsCard({
-	gameDetails,
-}: Readonly<{ gameDetails: GameDetails }>) {
+export default function GameInfoCard({
+	gameInfo,
+	gameScreenshots,
+	screenshotsLoading,
+}: Readonly<GameInfoProps>) {
 	const [showMoreInfo, setShowMoreInfo] = useState(false);
 
 	const onSelectionChange = () => setShowMoreInfo(!showMoreInfo);
+
+	if (!gameInfo) return <ShowError errorCode={404}></ShowError>;
 
 	const {
 		genres,
@@ -43,15 +46,14 @@ function GameDetailsCard({
 		name_original,
 		description_raw,
 		parent_platforms,
-	} = gameDetails;
+	} = gameInfo;
 
-	const releaseDate = useMemo(() => {
-		if (!released) return null;
-		return new Date(released).toLocaleDateString();
-	}, [released]);
+	const releaseDate = !released
+		? null
+		: new Date(released).toLocaleDateString();
 
 	return (
-		<Card className="" isBlurred>
+		<Card isBlurred>
 			<CardHeader className="flex justify-between px-6 my-2">
 				<Link to="/">
 					<Button isIconOnly variant="shadow" color="primary" size="sm">
@@ -66,7 +68,7 @@ function GameDetailsCard({
 			</CardHeader>
 			<CardBody className="grid gird-cols-1 gap-2 lg:grid-cols-12">
 				<div className="lg:col-span-8">
-					<ImageCarousel />
+					<Carousel slides={gameScreenshots} loading={screenshotsLoading} />
 				</div>
 
 				<Card className="lg:col-span-4 " isFooterBlurred isBlurred>
@@ -116,30 +118,5 @@ function GameDetailsCard({
 				</Card>
 			</CardBody>
 		</Card>
-	);
-}
-
-/**
- * Renders the game information based on the provided game details, loading status, and error.
- * @param {Readonly<Props>} gameDetails - The details of the game to be displayed.
- * @return {JSX.Element} The JSX element representing the rendered game information.
- */
-export default function GameInfo({
-	gameDetails,
-	loading,
-	error,
-}: Readonly<Props>): JSX.Element {
-	return (
-		<>
-			{error && <p>Oops! something went wrong</p>}
-			{loading && (
-				<Spinner
-					size="lg"
-					className="flex justify-center align-middle min-h-screen"
-					label="Loading game details..."
-				></Spinner>
-			)}
-			{gameDetails && <GameDetailsCard gameDetails={gameDetails} />}
-		</>
 	);
 }

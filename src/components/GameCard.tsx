@@ -2,9 +2,9 @@ import type { Games } from "@/types";
 
 import { Card, CardBody, CardHeader, Image, Chip } from "@nextui-org/react";
 
-import RatingEmoji from "@/components/RatingEmoji";
-import CriticScore from "@/components/CriticScore";
-import PlatformIcons from "@/components/PlatformIcons";
+import RatingEmoji from "@/components/utilComponents/RatingEmoji";
+import CriticScore from "@/components/utilComponents/CriticScore";
+import PlatformIcons from "@/components/utilComponents/PlatformIcons";
 
 interface Props {
 	game: Games;

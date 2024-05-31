@@ -3,7 +3,7 @@ import DefaultLayout from "@/layouts/Default";
 import { Button } from "@nextui-org/react";
 import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import GameGrid from "@/components/GameGrid";
-import ShowError from "@/components/ShowError";
+import ShowError from "@/components/utilComponents/ShowError";
 
 import useGame from "@/hooks/useGames";
 
