@@ -77,7 +77,7 @@ export default function GameInfoCard({
 					</CardHeader>
 
 					<CardBody>
-						<ScrollShadow hideScrollBar className="scroll-smooth max-h-[300px]">
+						<ScrollShadow hideScrollBar className="scroll-smooth h-full">
 							<p className="pr-2">{description_raw}</p>
 						</ScrollShadow>
 					</CardBody>

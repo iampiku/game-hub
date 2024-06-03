@@ -52,3 +52,15 @@ export function formatNumberToShot(value: number) {
 	});
 	return numberFormatter.format(value);
 }
+
+// export function generateDateFilter(filterName: string) {
+// 	if (filterName.length === 0) return null;
+
+// 	const currentDate = new Date();
+
+// 	const filterDateMapping: {[key: string]:  string} = {
+// 		"" : ""
+// 	};
+
+// 	return filterDateMapping[filterName];
+// }
