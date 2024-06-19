@@ -29,7 +29,7 @@ export default function useGame(id: null | string) {
 
 	const apiParams = useMemo(() => {
 		let params: { [key: string]: string | number } = {
-			page_size: 16,
+			page_size: "16",
 		};
 
 		params["page"] = page;

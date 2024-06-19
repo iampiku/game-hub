@@ -39,24 +39,26 @@ export default function TopBar() {
 	}, [isDark, updateAppTheme]);
 
 	const commonNavClasses =
-		"sticky top-0 s flex flex-col md:flex-row md:gap-0 items-center gap-3 justify-between px-6 py-5 mb-4 z-10";
+		"sticky top-0 s flex flex-col md:flex-row md:gap-0 items-center gap-3 justify-between px-6 py-5 mb-4 z-10 backdrop-blur-md";
 	const navbarClasses =
 		(isDark ? "bg-white/10 " : "bg-white/95 ") + commonNavClasses;
 
 	return (
 		<nav className={navbarClasses}>
-			<button
+			<motion.button
 				type="button"
-				onClick={() => navigate(-1)}
+				onClick={() => navigate("/")}
+				transition={{ type: "spring", duration: 0.2 }}
 				className="font-semibold text-xl cursor-pointer"
 			>
 				⚛️ Game Browser
-			</button>
+			</motion.button>
 
 			<motion.div
 				className="flex w-full justify-center items-center"
 				initial={{ maxWidth: 400 }}
 				animate={formAnimateControl}
+				transition={{ type: "spring", duration: 0.6 }}
 			>
 				<SearchInput
 					handleSearch={updateSearchParams}

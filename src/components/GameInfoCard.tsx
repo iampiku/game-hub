@@ -53,7 +53,7 @@ export default function GameInfoCard({
 		: new Date(released).toLocaleDateString();
 
 	return (
-		<Card isBlurred>
+		<Card>
 			<CardHeader className="flex justify-between px-6 my-2">
 				<Link to="/">
 					<Button isIconOnly variant="shadow" color="primary" size="sm">
@@ -67,17 +67,17 @@ export default function GameInfoCard({
 				</header>
 			</CardHeader>
 			<CardBody className="grid gird-cols-1 gap-2 lg:grid-cols-12">
-				<div className="lg:col-span-8">
+				<div className="lg:col-span-8 px-12">
 					<Carousel slides={gameScreenshots} loading={screenshotsLoading} />
 				</div>
 
-				<Card className="lg:col-span-4 " isFooterBlurred isBlurred>
+				<Card className="lg:col-span-4 max-h-[600px]" isFooterBlurred isBlurred>
 					<CardHeader>
 						<header className="text-4xl">About</header>
 					</CardHeader>
 
 					<CardBody>
-						<ScrollShadow hideScrollBar className="scroll-smooth h-full">
+						<ScrollShadow hideScrollBar className="scroll-smooth max-h-[300px]">
 							<p className="pr-2">{description_raw}</p>
 						</ScrollShadow>
 					</CardBody>

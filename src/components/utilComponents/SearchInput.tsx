@@ -27,7 +27,7 @@ export default function SearchInput({
 			isClearable
 			radius="md"
 			variant="faded"
-			onFocus={() => animateWidth(700)}
+			onFocus={() => animateWidth(600)}
 			onBlur={() => animateWidth(400)}
 			value={search}
 			aria-label="Search"
