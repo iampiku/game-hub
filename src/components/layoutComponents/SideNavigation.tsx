@@ -23,12 +23,7 @@ import useQueryParams from "@/hooks/useQueryParams";
 
 import type { MenuList } from "@/types";
 
-import {
-	genres,
-	parentPlatforms,
-	buildFilterParams,
-	generateDateFilter,
-} from "@/utils";
+import { genres, parentPlatforms, buildFilterParams } from "@/utils";
 
 type AccordionItems = {
 	title: string;
