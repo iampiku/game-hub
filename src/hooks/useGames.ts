@@ -43,7 +43,10 @@ export default function useGame(id: null | string) {
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["games", apiParams],
 		queryFn: ({ signal }) =>
-			gameService<GameList | GameDetails | null>(signal, apiParams),
+			gameService<GameList | GameDetails | null>(signal, {
+				...apiParams,
+				game_pk: null,
+			}),
 	});
 
 	const gameData: GameState = useMemo(() => {
