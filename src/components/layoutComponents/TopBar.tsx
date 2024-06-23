@@ -3,15 +3,16 @@ import SearchInput from "@/components/utilComponents/SearchInput";
 
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useAnimation, motion } from "framer-motion";
 
 export default function TopBar() {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { setItem, getItem } = useLocalStorage<boolean>("isDark");
 
 	const [isDark, setIsDark] = useState(!!getItem());
-	const [search, setSearch] = useSearchParams();
+	const [_, setSearch] = useSearchParams();
 	const formAnimateControl = useAnimation();
 
 	const setFormAnimateWidth = (width: number) =>
@@ -19,7 +20,7 @@ export default function TopBar() {
 
 	function updateSearchParams(query: string) {
 		if (query.length !== 0) setSearch({ query });
-		else search.delete("query");
+		else setSearch("");
 	}
 
 	const updateAppTheme = useCallback(
@@ -39,7 +40,7 @@ export default function TopBar() {
 	}, [isDark, updateAppTheme]);
 
 	const commonNavClasses =
-		"sticky top-0 s flex flex-col md:flex-row md:gap-0 items-center gap-3 justify-between px-6 py-5 mb-4 z-10 backdrop-blur-md";
+		"sticky top-0 s flex flex-col md:flex-row md:gap-0 items-center gap-3 justify-between px-6 py-5 mb-4 z-30 backdrop-blur-md";
 	const navbarClasses =
 		(isDark ? "bg-white/10 " : "bg-white/95 ") + commonNavClasses;
 
@@ -54,17 +55,19 @@ export default function TopBar() {
 				⚛️ Game Browser
 			</motion.button>
 
-			<motion.div
-				className="flex w-full justify-center items-center"
-				initial={{ maxWidth: 400 }}
-				animate={formAnimateControl}
-				transition={{ type: "spring", duration: 0.6 }}
-			>
-				<SearchInput
-					handleSearch={updateSearchParams}
-					animateWidth={setFormAnimateWidth}
-				/>
-			</motion.div>
+			{!location.pathname.includes("/game") && (
+				<motion.div
+					className="flex w-full justify-center items-center"
+					initial={{ maxWidth: 400 }}
+					animate={formAnimateControl}
+					transition={{ type: "spring", duration: 0.6 }}
+				>
+					<SearchInput
+						handleSearch={updateSearchParams}
+						animateWidth={setFormAnimateWidth}
+					/>
+				</motion.div>
+			)}
 			<Switch size="sm" isSelected={isDark} onValueChange={setIsDark}></Switch>
 		</nav>
 	);

@@ -23,7 +23,12 @@ import useQueryParams from "@/hooks/useQueryParams";
 
 import type { MenuList } from "@/types";
 
-import { parentPlatforms, genres, buildFilterParams } from "@/utils";
+import {
+	genres,
+	parentPlatforms,
+	buildFilterParams,
+	generateDateFilter,
+} from "@/utils";
 
 type AccordionItems = {
 	title: string;
@@ -90,7 +95,7 @@ export default function SideNavigation() {
 		},
 		{
 			_selected: false,
-			label: "Popular in 2023",
+			label: `Popular in ${new Date().getFullYear()}`,
 			type: "menu",
 			menuType: "topGames",
 			icon: <FaChartBar className={"text-base"} />,

@@ -11,13 +11,14 @@ import {
 	CardFooter,
 	Accordion,
 	AccordionItem,
+	Link,
 } from "@nextui-org/react";
-import { Link } from "react-router-dom";
+
 import { FaArrowLeft } from "react-icons/fa";
+import ShowError from "./utilComponents/ShowError";
 import Carousel from "@/components/carousel/Carousel";
 import CriticScore from "@/components/utilComponents/CriticScore";
 import PlatformIcons from "@/components/utilComponents/PlatformIcons";
-import ShowError from "./utilComponents/ShowError";
 
 interface GameInfoProps {
 	screenshotsLoading: boolean;
@@ -30,7 +31,7 @@ export default function GameInfoCard({
 	gameScreenshots,
 	screenshotsLoading,
 }: Readonly<GameInfoProps>) {
-	const [showMoreInfo, setShowMoreInfo] = useState(false);
+	const [showMoreInfo, setShowMoreInfo] = useState(true);
 
 	const onSelectionChange = () => setShowMoreInfo(!showMoreInfo);
 
@@ -43,6 +44,7 @@ export default function GameInfoCard({
 		metacritic,
 		developers,
 		publishers,
+		description,
 		name_original,
 		description_raw,
 		parent_platforms,
@@ -55,19 +57,25 @@ export default function GameInfoCard({
 	return (
 		<Card>
 			<CardHeader className="flex justify-between px-6 my-2">
-				<Link to="/">
+				<Link href="/">
 					<Button isIconOnly variant="shadow" color="primary" size="sm">
 						<FaArrowLeft />
 					</Button>
 				</Link>
-				<header className="text-2xl md:text-4xl lg:text-5xl uppercase flex items-center gap-2">
-					<Link to={website}>{name_original}</Link>
+				<header className="text-lg sm:text-2xl md:text-4xl lg:text-5xl uppercase flex items-center gap-2">
+					<Link
+						isExternal
+						href={website}
+						className="text-lg sm:text-2xl md:text-4xl lg:text-5xl"
+					>
+						{name_original}
+					</Link>
 
-					{metacritic !== null && <CriticScore score={metacritic} />}
+					{!!metacritic && <CriticScore score={metacritic} />}
 				</header>
 			</CardHeader>
 			<CardBody className="grid gird-cols-1 gap-2 lg:grid-cols-12">
-				<div className="lg:col-span-8 px-12">
+				<div className="lg:col-span-8 mt-[3px]">
 					<Carousel slides={gameScreenshots} loading={screenshotsLoading} />
 				</div>
 
@@ -78,13 +86,22 @@ export default function GameInfoCard({
 
 					<CardBody>
 						<ScrollShadow hideScrollBar className="scroll-smooth max-h-[300px]">
-							<p className="pr-2">{description_raw}</p>
+							{!description_raw.length ? (
+								<p dangerouslySetInnerHTML={{ __html: description }}></p>
+							) : (
+								<p className="pr-2">{description_raw}</p>
+							)}
 						</ScrollShadow>
 					</CardBody>
 
 					<CardFooter>
-						<Accordion isCompact onSelectionChange={onSelectionChange}>
+						<Accordion
+							isCompact
+							defaultExpandedKeys={["1"]}
+							onSelectionChange={onSelectionChange}
+						>
 							<AccordionItem
+								key="1"
 								title={showMoreInfo ? "Close" : "Show More"}
 								aria-label={showMoreInfo ? "Close" : "Show More"}
 							>

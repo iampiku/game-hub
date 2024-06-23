@@ -3,7 +3,7 @@ import { screenshotService } from "@/service";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useGameScreenshots(gameId: string | null) {
-	const { data, isLoading, isError } = useQuery({
+	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["screenshots"],
 		queryFn: ({ signal }) =>
 			screenshotService<{ results: { id: number; image: string }[] }>(signal, {
@@ -14,6 +14,7 @@ export default function useGameScreenshots(gameId: string | null) {
 		data?.results.map(({ id, image }) => ({ id, image })) ?? [];
 
 	return {
+		error,
 		isLoading,
 		isError,
 		gameScreenshots,

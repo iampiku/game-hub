@@ -1,6 +1,7 @@
 import { Input } from "@nextui-org/react";
 
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
 	handleSearch: (search: string) => void;
@@ -11,14 +12,18 @@ export default function SearchInput({
 	handleSearch,
 	animateWidth,
 }: Readonly<Props>) {
-	const [search, setSearch] = useState("");
+	const [searchQuery] = useSearchParams();
+	const [search, setSearch] = useState(searchQuery.get("query") ?? "");
 
 	function onEnter(key: string) {
 		if (key !== "Enter") return;
 		handleSearch(search);
 	}
 
-	const onClearText = () => handleSearch("");
+	const onClearText = () => {
+		setSearch("");
+		handleSearch("");
+	};
 
 	return (
 		<Input

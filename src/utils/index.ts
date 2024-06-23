@@ -30,7 +30,7 @@ export function buildFilterParams(
 		else {
 			switch (menu.menuType) {
 				case "newRelease":
-					filterParams["newRelease"] = menu.label;
+					filterParams["dates"] = generateDateFilter(menu.label);
 					continue;
 				case "platforms":
 					filterParams["parent_platforms"] =
@@ -60,7 +60,10 @@ export function sortArrayOfObjects<T>(params: {
 }): Array<T> {
 	const { arr, sortOrder = "asc", sortBy } = params;
 	if (!arr.length || !sortBy) return arr;
-	return arr.sort((a, b) => {
+
+	const sortedArr = [...arr];
+
+	return sortedArr.sort((a, b) => {
 		if (sortOrder === "asc") {
 			if (a[sortBy] > b[sortBy]) return -1;
 			if (a[sortBy] < b[sortBy]) return 1;
@@ -73,14 +76,61 @@ export function sortArrayOfObjects<T>(params: {
 	});
 }
 
-// export function generateDateFilter(filterName: string) {
-// 	if (filterName.length === 0) return null;
+const formatDate = (date: Date) => {
+	const year = date.getFullYear();
+	const month = (date.getMonth() + 1).toString().padStart(2, "0");
+	const day = date.getDate().toString().padStart(2, "0");
+	return `${year}-${month}-${day}`;
+};
 
-// 	const currentDate = new Date();
+export function generateDateFilter(selectedFilter: string) {
+	let dateRanges = [];
+	const today = new Date();
 
-// 	const filterDateMapping: { [key: string]: string } = {
-// 		"": "",
-// 	};
+	switch (selectedFilter) {
+		case "Last 30 days":
+			const last30Days = new Date(today);
+			last30Days.setDate(today.getDate() - 30);
+			dateRanges = [[formatDate(last30Days), formatDate(today)]];
+			break;
+		case "This week":
+			const thisWeekStart = new Date(today);
+			thisWeekStart.setDate(today.getDate() - today.getDay() + 1);
+			const thisWeekEnd = new Date(thisWeekStart);
+			thisWeekEnd.setDate(thisWeekStart.getDate() + 6);
+			dateRanges = [[formatDate(thisWeekStart), formatDate(thisWeekEnd)]];
+			break;
+		case "Next week":
+			const nextWeekStart = new Date(today);
+			nextWeekStart.setDate(today.getDate() - today.getDay() + 8);
+			const nextWeekEnd = new Date(nextWeekStart);
+			nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+			dateRanges = [[formatDate(nextWeekStart), formatDate(nextWeekEnd)]];
+			break;
+		case "Release Calender":
+			const currentMonthStart = new Date(
+				today.getFullYear(),
+				today.getMonth(),
+				1
+			);
+			const currentMonthEnd = new Date(
+				today.getFullYear(),
+				today.getMonth() + 1,
+				0
+			);
+			dateRanges = [
+				[formatDate(currentMonthStart), formatDate(currentMonthEnd)],
+			];
+			break;
+		case "Best of the year":
+		case `Popular in ${new Date().getFullYear()}`:
+			const yearStart = new Date(today.getFullYear(), 0, 1);
+			const yearEnd = new Date(today.getFullYear(), 11, 31);
+			dateRanges = [[formatDate(yearStart), formatDate(yearEnd)]];
+			break;
+		default:
+			return "";
+	}
 
-// 	return filterDateMapping[filterName];
-// }
+	return dateRanges.map((dateRange) => dateRange.join(",")).join(".");
+}

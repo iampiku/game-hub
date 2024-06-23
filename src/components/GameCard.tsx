@@ -48,7 +48,7 @@ export default function GameCard({ game }: Readonly<Props>) {
 				<div className="flex pb-3 gap-2 flex-wrap">
 					{game.genres.map((genre) => {
 						return (
-							<Chip key={genre.id} variant="shadow" color="secondary">
+							<Chip key={genre.id} variant="flat" color="secondary">
 								{genre.name}
 							</Chip>
 						);

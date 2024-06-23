@@ -55,6 +55,7 @@ export default function ItemsList({ menuList, onAction }: Readonly<Props>) {
 				return (
 					<ListboxItem
 						key={menu.label}
+						className={menu._selected ? "text-primary-600" : ""}
 						onClick={() => handleMenuSelection(menu)}
 						startContent={ListStartContent({ menu })}
 					>

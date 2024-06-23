@@ -9,6 +9,7 @@ type Params = {
 	search?: string;
 	page_size?: number;
 	platforms?: string;
+	ordering?: string;
 };
 
 enum BASE_API_URLS {
@@ -25,6 +26,7 @@ const _requestErrorHandler = (error: unknown) => {
 	error instanceof AxiosError
 		? console.error(error.message)
 		: console.error("Oops! something went wrong");
+	throw error;
 };
 
 function _requestSuccessHandler<T>(response: AxiosResponse) {

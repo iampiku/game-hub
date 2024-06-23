@@ -40,7 +40,7 @@ export default function useGame(id: null | string) {
 		return params;
 	}, [page, searchQuery, filterParams, id]);
 
-	const { data, isLoading, isError } = useQuery({
+	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["games", apiParams],
 		queryFn: ({ signal }) =>
 			gameService<GameList | GameDetails | null>(signal, apiParams),
@@ -63,6 +63,7 @@ export default function useGame(id: null | string) {
 
 	return {
 		page,
+		error,
 		setPage,
 		isError,
 		gameData,

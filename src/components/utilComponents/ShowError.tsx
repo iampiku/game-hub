@@ -39,12 +39,7 @@ const ShowError = memo(({ errorCode, customDescription }: Readonly<Props>) => {
 
 	return (
 		<div className="flex flex-col justify-center items-center pb-6">
-			<Image
-				width={300}
-				alt="error_image"
-				src={errorIcon[errorCode]}
-				className="mix-blend-multiply"
-			></Image>
+			<Image width={300} alt="error_image" src={errorIcon[errorCode]}></Image>
 			<strong className="text-lg">{errorMessage[errorCode].title}</strong>
 			<p>{errorSubtitle}</p>
 		</div>
