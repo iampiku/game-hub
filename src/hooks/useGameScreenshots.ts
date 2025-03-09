@@ -1,22 +1,14 @@
-import { screenshotService } from "@/service";
+import gameServiceInstance from "@/service";
 
 import { useQuery } from "@tanstack/react-query";
 
 export default function useGameScreenshots(gameId: string | null) {
-	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["screenshots"],
+	return useQuery({
+		enabled: Boolean(gameId),
+		queryKey: ["screenShots", gameId],
 		queryFn: ({ signal }) =>
-			screenshotService<{ results: { id: number; image: string }[] }>(signal, {
-				game_pk: gameId,
+			gameServiceInstance.gameScreenShotService(signal, {
+				game_pk: gameId ?? "",
 			}),
 	});
-	const gameScreenshots =
-		data?.results.map(({ id, image }) => ({ id, image })) ?? [];
-
-	return {
-		error,
-		isLoading,
-		isError,
-		gameScreenshots,
-	};
 }

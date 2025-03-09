@@ -22,7 +22,7 @@ export type Games = {
 	genres: Genre[];
 	tags: Genre[];
 	esrb_rating: EsrbRating;
-	short_screenshots: ShortScreenshot[];
+	short_screenshots: Screenshot[];
 };
 
 export type AddedByStatus = {
@@ -99,7 +99,7 @@ export type Rating = {
 
 export type Title = "exceptional" | "recommended" | "meh" | "skip";
 
-export type ShortScreenshot = {
+export type Screenshot = {
 	id: number;
 	image: string;
 };
@@ -192,3 +192,20 @@ export interface Developer {
 	domain?: string;
 	language?: Language;
 }
+
+export type Params = {
+	id?: string;
+	page?: number;
+	genres?: string;
+	game_pk?: string;
+	search?: string;
+	page_size?: number;
+	platforms?: string;
+	ordering?: string;
+};
+
+export type FetchDataParams = {
+	signal: AbortSignal;
+	apiUrl: string;
+	params?: Params;
+};

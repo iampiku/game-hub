@@ -1,16 +1,14 @@
-import { AxiosError, AxiosResponse, CanceledError } from "axios";
-import axiosClient from "../api";
+import BaseService from "@/api";
 
-type Params = {
-	id?: string;
-	page?: number;
-	genres?: string;
-	game_pk: string | null;
-	search?: string;
-	page_size?: number;
-	platforms?: string;
-	ordering?: string;
-};
+import type {
+	Games,
+	Genre,
+	Store,
+	Params,
+	Developer,
+	Screenshot,
+	ParentPlatform,
+} from "@/types";
 
 enum BASE_API_URLS {
 	STORES = "/stores",
@@ -21,73 +19,51 @@ enum BASE_API_URLS {
 	PLATFORMS = "/platforms/lists/parents",
 }
 
-const _requestErrorHandler = (error: unknown) => {
-	if (error instanceof CanceledError) return;
-	error instanceof AxiosError
-		? console.error(error.message)
-		: console.error("Oops! something went wrong");
-	throw error;
-};
+class GameService extends BaseService {
+	gameService(signal: AbortSignal, params: Params) {
+		const apiUrl = params?.id
+			? `${BASE_API_URLS.BASE_URL}/${params.id}`
+			: BASE_API_URLS.BASE_URL;
 
-function _requestSuccessHandler<T>(response: AxiosResponse) {
-	return response.status === 200 ? (response.data as T) : null;
-}
+		return this.fetchData<Games>({ apiUrl, signal, params });
+	}
 
-async function _makeRequest<T>(
-	signal: AbortSignal,
-	apiUrl: string,
-	params?: Params
-): Promise<T | null> {
-	const apiParams =
-		apiUrl === BASE_API_URLS.BASE_URL && params ? { ...params } : {};
-	try {
-		const response = await axiosClient.get<T>(apiUrl, {
+	gameScreenShotService(signal: AbortSignal, params: Params) {
+		if (!params?.game_pk) return;
+		return this.fetchData<Screenshot>({
 			signal,
-			params: { ...apiParams },
+			params,
+			apiUrl: `${BASE_API_URLS.BASE_URL}/${params.game_pk}/screenshots`,
 		});
-		return _requestSuccessHandler<T>(response);
-	} catch (error) {
-		_requestErrorHandler(error);
-		return null;
+	}
+
+	genreService(signal: AbortSignal) {
+		return this.fetchData<Genre>({ signal, apiUrl: BASE_API_URLS.GENRES });
+	}
+
+	platformService(signal: AbortSignal) {
+		return this.fetchData<ParentPlatform>({
+			signal,
+			apiUrl: BASE_API_URLS.PLATFORMS,
+		});
+	}
+
+	developerService(signal: AbortSignal) {
+		return this.fetchData<Developer>({
+			signal,
+			apiUrl: BASE_API_URLS.DEVELOPERS,
+		});
+	}
+
+	storeService(signal: AbortSignal) {
+		return this.fetchData<Store>({ signal, apiUrl: BASE_API_URLS.STORES });
+	}
+
+	publisherService(signal: AbortSignal) {
+		return this.fetchData({ signal, apiUrl: BASE_API_URLS.PUBLISHER });
 	}
 }
 
-export function gameService<T>(
-	signal: AbortSignal,
-	params: Params
-): Promise<T | null> {
-	const apiUrl = params.id
-		? `${BASE_API_URLS.BASE_URL}/${params.id}`
-		: BASE_API_URLS.BASE_URL;
-	return _makeRequest<T>(signal, apiUrl, params);
-}
+const gameServiceInstance = new GameService();
 
-export async function genreService<T>(signal: AbortSignal) {
-	return _makeRequest<T>(signal, BASE_API_URLS.GENRES);
-}
-
-export async function platformService<T>(signal: AbortSignal) {
-	return _makeRequest<T>(signal, BASE_API_URLS.PLATFORMS);
-}
-
-export async function developerService<T>(signal: AbortSignal) {
-	return _makeRequest<T>(signal, BASE_API_URLS.DEVELOPERS);
-}
-
-export async function storeService<T>(signal: AbortSignal) {
-	return _makeRequest<T>(signal, BASE_API_URLS.STORES);
-}
-
-export async function publisherService<T>(signal: AbortSignal) {
-	return _makeRequest<T>(signal, BASE_API_URLS.PUBLISHER);
-}
-
-export async function screenshotService<T>(
-	signal: AbortSignal,
-	params: Params
-) {
-	if (params.game_pk) {
-		const apiUrl = `${BASE_API_URLS.BASE_URL}/${params.game_pk}/screenshots`;
-		return _makeRequest<T>(signal, apiUrl);
-	} else throw new Error("For game screenshots id is required");
-}
+export default gameServiceInstance;
