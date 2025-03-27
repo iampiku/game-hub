@@ -1,13 +1,14 @@
 import BaseService from "@/api";
 
 import type {
-	Games,
-	Genre,
-	Store,
 	Params,
-	Developer,
-	Screenshot,
-	ParentPlatform,
+	GameResponse,
+	GenreResponse,
+	StoreResponse,
+	PlatformResponse,
+	DeveloperResponse,
+	GameDetails,
+	ScreenshotResponse,
 } from "@/types";
 
 enum BASE_API_URLS {
@@ -20,17 +21,28 @@ enum BASE_API_URLS {
 }
 
 class GameService extends BaseService {
-	gameService(signal: AbortSignal, params: Params) {
-		const apiUrl = params?.id
-			? `${BASE_API_URLS.BASE_URL}/${params.id}`
-			: BASE_API_URLS.BASE_URL;
-
-		return this.fetchData<Games>({ apiUrl, signal, params });
+	gameService(signal: AbortSignal, params: Partial<Params>) {
+		return this.fetchData<GameResponse>({
+			apiUrl: BASE_API_URLS.BASE_URL,
+			signal,
+			params,
+		});
 	}
 
-	gameScreenShotService(signal: AbortSignal, params: Params) {
-		if (!params?.game_pk) return;
-		return this.fetchData<Screenshot>({
+	gameDetailsService(signal: AbortSignal, gameId: string) {
+		const apiUrl = `${BASE_API_URLS.BASE_URL}/${gameId}`;
+		return this.fetchData<GameDetails>({
+			apiUrl,
+			signal,
+			params: { id: gameId },
+		});
+	}
+
+	gameScreenShotService(
+		signal: AbortSignal,
+		params: { game_pk: string } & Partial<Omit<Params, "game_pk">>
+	) {
+		return this.fetchData<ScreenshotResponse>({
 			signal,
 			params,
 			apiUrl: `${BASE_API_URLS.BASE_URL}/${params.game_pk}/screenshots`,
@@ -38,27 +50,34 @@ class GameService extends BaseService {
 	}
 
 	genreService(signal: AbortSignal) {
-		return this.fetchData<Genre>({ signal, apiUrl: BASE_API_URLS.GENRES });
+		return this.fetchData<GenreResponse>({
+			signal,
+			apiUrl: BASE_API_URLS.GENRES,
+		});
 	}
 
 	platformService(signal: AbortSignal) {
-		return this.fetchData<ParentPlatform>({
+		return this.fetchData<PlatformResponse>({
 			signal,
 			apiUrl: BASE_API_URLS.PLATFORMS,
 		});
 	}
 
 	developerService(signal: AbortSignal) {
-		return this.fetchData<Developer>({
+		return this.fetchData<DeveloperResponse>({
 			signal,
 			apiUrl: BASE_API_URLS.DEVELOPERS,
 		});
 	}
 
 	storeService(signal: AbortSignal) {
-		return this.fetchData<Store>({ signal, apiUrl: BASE_API_URLS.STORES });
+		return this.fetchData<StoreResponse>({
+			signal,
+			apiUrl: BASE_API_URLS.STORES,
+		});
 	}
 
+	// TODO Add type definition for this endpoint
 	publisherService(signal: AbortSignal) {
 		return this.fetchData({ signal, apiUrl: BASE_API_URLS.PUBLISHER });
 	}

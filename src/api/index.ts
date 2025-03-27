@@ -14,7 +14,7 @@ export default class BaseService {
 		try {
 			const response = await axiosInstance.get<T>(fetchPayload.apiUrl, {
 				signal: fetchPayload.signal,
-				params: fetchPayload?.params && fetchPayload.params,
+				params: fetchPayload?.params ? fetchPayload.params : {},
 			});
 			return this.fetchSuccessHandler<T>(response);
 		} catch (error) {
@@ -22,11 +22,11 @@ export default class BaseService {
 		}
 	}
 
-	private fetchErrorHandler(error: unknown) {
+	private fetchErrorHandler(error: unknown): void {
 		if (error instanceof CanceledError) return;
 
 		if (error instanceof AxiosError) {
-			console.error(error.message);
+			console.warn(error.message);
 			throw error;
 		}
 

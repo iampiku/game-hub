@@ -2,7 +2,7 @@ import gameServiceInstance from "@/service";
 
 import { useQuery } from "@tanstack/react-query";
 
-export default function useGameScreenshots(gameId: string | null) {
+export default function useGameScreenshots(gameId: string | undefined) {
 	return useQuery({
 		enabled: Boolean(gameId),
 		queryKey: ["screenShots", gameId],

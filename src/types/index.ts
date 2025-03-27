@@ -1,4 +1,4 @@
-export type Games = {
+export type Game = {
 	id: number;
 	slug: string;
 	name: string;
@@ -102,30 +102,15 @@ export type Title = "exceptional" | "recommended" | "meh" | "skip";
 export type Screenshot = {
 	id: number;
 	image: string;
+	width: number;
+	height: number;
+	is_deleted: boolean;
 };
 
 export type Store = {
 	id: number;
 	store: Genre;
 };
-
-export type GenreMenu = {
-	id: number;
-	label: string;
-	type: "genre";
-	imageUrl: string;
-	_selected: boolean;
-};
-
-export type Menu = {
-	label: string;
-	type: "menu";
-	menuType: "newRelease" | "topGames" | "platforms";
-	icon: JSX.Element;
-	_selected: boolean;
-};
-
-export type MenuList = GenreMenu | Menu;
 
 export type GameDetails = {
 	id: number;
@@ -194,18 +179,33 @@ export interface Developer {
 }
 
 export type Params = {
-	id?: string;
-	page?: number;
-	genres?: string;
-	game_pk?: string;
-	search?: string;
-	page_size?: number;
-	platforms?: string;
-	ordering?: string;
+	id: string;
+	page: number;
+	genres: string;
+	game_pk: string;
+	search: string;
+	page_size: number;
+	platforms: string;
+	ordering: string;
 };
 
 export type FetchDataParams = {
 	signal: AbortSignal;
 	apiUrl: string;
-	params?: Params;
+	params?: Partial<Params>;
 };
+
+type BaseResponse<T> = {
+	count: number;
+	next: string | null;
+	previous: string | null;
+	results: Array<T>;
+	seo_title?: string;
+};
+
+export type GameResponse = BaseResponse<Game>;
+export type GenreResponse = BaseResponse<Genre>;
+export type StoreResponse = BaseResponse<Store>;
+export type DeveloperResponse = BaseResponse<Developer>;
+export type ScreenshotResponse = BaseResponse<Screenshot>;
+export type PlatformResponse = BaseResponse<ParentPlatform>;
